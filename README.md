@@ -5,10 +5,10 @@ npm install jade
 
 npm install mongoose
 npm install underscore
+npm install moment
 
 npm install bower -g
 bower install bootstrap
-bower install moment
 
 jade 
  -include  模块包含
