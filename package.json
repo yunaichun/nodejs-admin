@@ -4,9 +4,11 @@
   "description": "movie",
   "main": "app.js",
   "dependencies": {
-    "bcrypt": "^0.8.7",
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "express-session": "^1.14.1",
     "jade": "^1.11.0",
     "moment": "^2.15.0",
     "mongoose": "^4.6.0",

@@ -1,7 +1,11 @@
 //加载Express模块
 var express = require('express');
 //新版的express中已经不包含bodyparser
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+//新版的express中已经不包含cookieparser【sessionid】
+var cookieParser = require('cookie-parser');
+//新版的express中已经不包含session【store对象】
+var session=require('express-session')
 //请求样式（在bower安装包中的静态资源）
 var path = require('path');
 //设置端口，可以从命令行输入
@@ -14,6 +18,8 @@ var mongoose = require('mongoose');
 var _=require('underscore');
 //首页模型
 var Movie = require('./models/movie');
+//登录注册模型
+var User = require('./models/user');
 // //时间日期格式化
 // var moment=require('moment');
 
@@ -31,6 +37,13 @@ app.set('views', './views/pages');
 app.set('view engine', 'jade');
 //表单格式化
 app.use(bodyParser.urlencoded({ extended: true }));
+//session依赖的中间件
+app.use(cookieParser());
+//添加session
+app.use(session({
+	//防止篡改cookie值
+	secret:'imooc'
+}))
 //获取静态资源
 app.use(express.static(path.join(__dirname, 'public')));
 //本地moment
@@ -42,8 +55,11 @@ app.listen(port);
 console.log('server started on port ' + port);
 
 //路由的编写(浏览器中的地址)
-//index jade
+//index jade【首页-->渲染数据】
 app.get('/', function(req, res) {
+	console.log('user in session:')
+	//打印session中user的值
+	console.log(req.session.user);
     //调用方法（回调方法中拿到返回的movies数组）
     Movie.fetch(function(err, movies) {
         if (err) {
@@ -56,8 +72,89 @@ app.get('/', function(req, res) {
         })
     })
 })
+//【首页-->注册-->提交表单保存】
+app.post('/user/signup',function(req,res){
+	//获取表单数据(一个对象)
+	////req.param('user')集成路由,body,query三种形式
+	//req.query获取路由或异步url中
+	//req.body获取post表单
+	var _user=req.body.user;
+	//打印接收时保存前的密码
+	console.log(_user);
+	var user=new User(_user);
 
-//detail jade
+	//判断是否重复name
+	User.find({name:_user.name},function(err,user){
+		if(err){
+			console.log(err);
+		}
+		if(user){
+			console.log('userName is exist');
+			//如果有此用户直接返回到首页
+			return res.redirect('/');
+		}else{
+			//没有此用户才执行新增操作
+			user.save(function(err,user){
+				if(err){
+					console.log(err);
+				}
+				//重定向到首页
+		        res.render('/admin/listuser');
+		        //接收保存后的对象
+				console.log(user);
+			})
+		}
+	})
+})
+//【用户列表页-->渲染数据】
+app.get('/admin/listuser', function(req, res) {
+	 //调用方法（回调方法中拿到返回的movies数组）
+    User.fetch(function(err, users) {
+        if (err) {
+            console.log(err);
+        }
+        //渲染首页模板
+        res.render('userlist', {
+            title: '用户列表页',
+            users: users
+        })
+    })
+})
+//【首页-->登录-->提交表单保存】
+app.post('/user/signin',function(req,res){
+	var _user=req.body.user;
+	var name=_user.name;
+	var password=_user.password;
+
+	//判断是否重复name
+	User.findOne({name:name},function(err,user){
+		if(err){
+			console.log(err);
+		}
+		if(!user){
+			//用户不存在
+			return res.redirect('/');
+		}
+		//在schema中添加实例方法。传入明文密码，与数据库中的user。password进行匹配。
+		user.comparePassword(password,function(err,isMatch){
+			if(err){
+				console.log(err);
+			}
+			if(isMatch){
+				//将用户登录状态存入session内存中
+				req.session.user=user;
+				console.log('Password is matched')
+				res.redirect('/');
+			}else{
+				console.log('Password is not matched');
+			}
+		})
+	})
+})
+
+
+
+//detail jade【电影详情页-->渲染数据】
 app.get('/movie/:id', function(req, res) {
     //:id指的是可以获取前台传递的值
     var id = req.params.id;
@@ -70,8 +167,11 @@ app.get('/movie/:id', function(req, res) {
 
 })
 
-//admin jade
+
+
+//admin jade【添加电影页-->渲染空数据】
 app.get('/admin/addmovie', function(req, res) {
+	//需要有默认的值（因为修改也用了此页面，所以添加的时候默认渲染为空）
     res.render('admin', {
         title: '后台录入页',
         movie:{
@@ -86,7 +186,7 @@ app.get('/admin/addmovie', function(req, res) {
         }
     })
 })
-//点击修改到表单
+//【修改电影页-->渲染数据】
 //admin update movie(列表页点击更新，即修改-->将查询到的数据打印到后台录入页)
 app.get('/admin/updatemovie/:id',function(req,res){
 	var id=req.params.id;
@@ -99,7 +199,7 @@ app.get('/admin/updatemovie/:id',function(req,res){
 		})
 	}
 })
-//admin post movie（保存表单操作）
+//admin post movie【新增、修改电影-->提交表单保存】
 app.post('/admin/addmovie/new',function(req,res){
 	//前台是否传入id字段
 	var id=req.body.movie._id;
@@ -148,7 +248,9 @@ app.post('/admin/addmovie/new',function(req,res){
 	}
 })
 
-//list jade
+
+
+//list jade【电影列表页-->渲染数据】
 app.get('/admin/listmovie', function(req, res) {
 	 //调用方法（回调方法中拿到返回的movies数组）
     Movie.fetch(function(err, movies) {
@@ -162,8 +264,7 @@ app.get('/admin/listmovie', function(req, res) {
         })
     })
 })
-
-//list delete movie
+//list delete movie【电影列表页-->异步删除click】
 app.delete('/admin/listmovie',function(req,res){
 	var id=req.query.id;//ajax中通过url中拼接参数
 	if(id){
