@@ -16,6 +16,8 @@ var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 //引用underscore模块（修改替换）
 var _=require('underscore');
+//session持久化【传入session，不是express】
+var mongoStore=require('connect-mongo')(session);
 //首页模型
 var Movie = require('./models/movie');
 //登录注册模型
@@ -32,7 +34,7 @@ mongoose.connect('mongodb://localhost:12345/imooc');
 
 
 //设置视图根目录
-app.set('views', './views/pages');
+app.set('views', './views/pages/');
 //设置默认的模板引擎
 app.set('view engine', 'jade');
 //表单格式化
@@ -42,7 +44,12 @@ app.use(cookieParser());
 //添加session
 app.use(session({
 	//防止篡改cookie值
-	secret:'imooc'
+	secret:'imooc',
+	//session持久化。传入第一个参数是mongoDB数据库地址。
+	store:new mongoStore({
+		url:'mongodb://localhost:12345/imooc',
+		collection:'sessions'
+	})
 }))
 //获取静态资源
 app.use(express.static(path.join(__dirname, 'public')));
@@ -54,14 +61,32 @@ app.listen(port);
 //打印启动日志
 console.log('server started on port ' + port);
 
+
+//预处理，在网站任何位置都可以判断用户的登录状态
+app.use(function(req,res,next){
+	var _user=req.session.user;
+	console.log(_user);
+	//如果session中有user的值，将session中user的值存入本地变量中去。这样首页的渲染就会判断是不是登录状态了。
+	if(_user){
+		app.locals.user=_user;
+		next();
+	}
+	return	next(); 
+})
 //路由的编写(浏览器中的地址)
 //index jade【首页-->渲染数据】
 app.get('/', function(req, res) {
 	console.log('user in session:')
 	//打印session中user的值
 	console.log(req.session.user);
+	// var _user=req.session.user;
+	// //如果session中有user的值，将session中user的值存入本地变量中去。这样首页的渲染就会判断是不是登录状态了。
+	// if(_user){
+	// 	app.locals.user=_user;
+	// }
     //调用方法（回调方法中拿到返回的movies数组）
     Movie.fetch(function(err, movies) {
+    	console.log(movies);
         if (err) {
             console.log(err);
         }
@@ -151,7 +176,15 @@ app.post('/user/signin',function(req,res){
 		})
 	})
 })
-
+//【首页-->登出-->删除session后重定向】
+app.get('/user/logout',function(req,res){
+	//删除session中的user的值
+	delete req.session.user;
+	//需要删除app.loacal上的user值。不然前台会判断，就是根据app.locals中的user值判断的
+	delete app.locals.user;	
+	//重定向到首页
+	res.redirect('/');
+})
 
 
 //detail jade【电影详情页-->渲染数据】

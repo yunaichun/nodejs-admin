@@ -8,6 +8,7 @@ mongoDB
  -npm install mongoose
  -npm install underscore
  -npm install moment
+ -npm install connect-mongo
 
 bower
  -npm install bower -g
@@ -27,7 +28,7 @@ jade
 
 
 网站内容
-    -用户登录、注册、权限管理
+    -用户登录、注册、注销、登出、权限管理
     -电影后台录入、列表
     -电影后台上传、统计、访客统计
     -电影分类
