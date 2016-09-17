@@ -32,7 +32,7 @@ mongoose.connect('mongodb://localhost:12345/imooc');
 
 
 //设置视图根目录
-app.set('views', './views/pages/');
+app.set('views', './app/views/pages');
 //设置默认的模板引擎
 app.set('view engine', 'jade');
 //表单格式化
@@ -70,7 +70,7 @@ require('./config/routes')(app);
 app.listen(port);
 
 
-//获取静态资源
+//获取静态资源。静态资源目录
 app.use(express.static(path.join(__dirname, 'public')));
 //本地moment
 app.locals.moment=require('moment');
