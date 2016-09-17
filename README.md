@@ -3,6 +3,7 @@ express
  -npm install body-parser
  -npm install cookie-parser 
  -npm install express-session
+ -npm install morgan
 
 mongoDB
  -npm install mongoose
