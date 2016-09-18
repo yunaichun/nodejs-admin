@@ -37,6 +37,13 @@ exports.signup= function(req, res) {
 }
 //【用户列表页-->渲染数据】
 exports.listuser= function(req, res) {
+    // var user=req.session.user;
+    // //如果没有用户登录，跳转到登录页面
+    // if(!user){
+    //     return res.redirect('/signin');
+    // }
+    // //如果用户权限值大于10，才会展现列表
+    // if(user.role>10){
         //调用方法（回调方法中拿到返回的movies数组）
         User.fetch(function(err, users) {
             if (err) {
@@ -48,6 +55,7 @@ exports.listuser= function(req, res) {
                 users: users
             })
         })
+    // }
 }
 //【首页-->登录-->提交表单保存】
 exports.signin= function(req, res) {
@@ -105,4 +113,21 @@ exports.showSignin = function(req, res) {
   res.render('signin', {
     title: '登录页面'
   })
+}
+
+//登录中间件
+exports.signinRequired = function(req, res,next) {
+    var user=req.session.user;
+    if(!user){
+        return res.redirect('/signin');
+    }
+    next();
+}
+//管理员中间件
+exports.adminRequired = function(req, res,next) {
+    var user=req.session.user;
+    if(user.role<=10){
+        return res.redirect('/signin');
+    }
+    next();
 }

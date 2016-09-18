@@ -29,8 +29,6 @@ module.exports = function(app) {
 
     //【首页-->注册-->提交表单保存】
     app.post('/user/signup', User.signup);
-    //【用户列表页-->渲染数据】
-    app.get('/user/listuser',User.listuser);
     //【首页-->登录-->提交表单保存】
     app.post('/user/signin',User.signin);
     //【首页-->登出-->删除session后重定向】
@@ -44,15 +42,17 @@ module.exports = function(app) {
 
     //detail jade【电影详情页-->渲染数据】
     app.get('/movie/:id', Movie.detail);
+        //【用户列表页-->渲染数据】[添加中间件]
+    app.get('/admin/user/list',User.signinRequired,User.adminRequired,User.listuser);
     //admin jade【添加电影页-->渲染空数据】
-    app.get('/admin/addmovie',Movie.new);
+    app.get('/admin/movie/new',User.signinRequired,User.adminRequired,Movie.new);
     //【修改电影页-->渲染数据】
     //admin update movie(列表页点击更新，即修改-->将查询到的数据打印到后台录入页)
-    app.get('/admin/updatemovie/:id', Movie.update);
+    app.get('/admin/movie/update/:id',User.signinRequired,User.adminRequired, Movie.update);
     //admin post movie【新增、修改电影-->提交表单保存】
-    app.post('/admin/addmovie/new', Movie.save);
+    app.post('/admin/movie',User.signinRequired,User.adminRequired, Movie.save);
     //list jade【电影列表页-->渲染数据】
-    app.get('/admin/listmovie',Movie.list);
+    app.get('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.list);
     //list delete movie【电影列表页-->异步删除click】
-    app.delete('/admin/listmovie', Movie.del);
+    app.delete('/admin/movie/list',User.signinRequired,User.adminRequired, Movie.del);
 }

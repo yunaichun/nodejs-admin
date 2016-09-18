@@ -13,7 +13,7 @@ $(function(){
 		var tr=$('.item-id-'+id);
 		$.ajax({
 			type:'DELETE',
-			url:'/admin/listmovie?id='+id
+			url:'/admin/movie/list?id='+id
 		}).done(function(results){
 			console.log(results);
 			if(results.success===1){
