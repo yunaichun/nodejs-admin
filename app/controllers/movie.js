@@ -1,5 +1,7 @@
 //电影页面模型
 var Movie = require('../models/movie');
+//评论页面
+var Comment = require('../models/comment');
 //引用underscore模块（修改替换）
 var _ = require('underscore');
 
@@ -8,12 +10,21 @@ exports.detail= function(req, res) {
     //:id指的是可以获取前台传递的值
     var id = req.params.id;
     Movie.findById(id, function(err, movie) {
-        res.render('detail', {
-            title: '详情页' + movie.title,
-            movie: movie
-        })
+        //-----关联查询用户名------//
+        //1、查找到此电影id
+        //2、populate关联查询user的数据from在模型中已经定义，来自User（ref:'User'）
+        //3、根据from中的ObjectId去user表中去查name
+        Comment
+            .find({movie:id})
+            .populate('from','name')
+            .exec(function(err,comments){
+                res.render('detail', {
+                    title: '详情页' + movie.title,
+                    movie: movie,
+                    comments:comments
+                })
+            })
     })
-
 }
 
 

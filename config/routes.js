@@ -4,7 +4,8 @@ var Index = require('../app/controllers/index');
 var User = require('../app/controllers/user');
 //电影
 var Movie=require('../app/controllers/movie'); 
-
+//评论
+var Comment=require('../app/controllers/comment'); 
 
 
 module.exports = function(app) {
@@ -55,4 +56,11 @@ module.exports = function(app) {
     app.get('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.list);
     //list delete movie【电影列表页-->异步删除click】
     app.delete('/admin/movie/list',User.signinRequired,User.adminRequired, Movie.del);
+
+
+    
+    //评论
+    app.post('/user/comment',User.signinRequired, Comment.save);
+    
+
 }
