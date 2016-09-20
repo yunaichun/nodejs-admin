@@ -13,7 +13,7 @@ exports.signup= function(req, res) {
         var user = new User(_user);
 
         //判断是否重复name
-        User.find({ name: _user.name }, function(err, user) {
+        User.findOne({ name: _user.name }, function(err, user) {
             if (err) {
                 console.log(err);
             }
@@ -125,9 +125,9 @@ exports.signinRequired = function(req, res,next) {
 }
 //管理员中间件
 exports.adminRequired = function(req, res,next) {
-    var user=req.session.user;
-    if(user.role<=10){
-        return res.redirect('/signin');
-    }
+    // var user=req.session.user;
+    // if(user.role<=10){
+    //     return res.redirect('/signin');
+    // }
     next();
 }

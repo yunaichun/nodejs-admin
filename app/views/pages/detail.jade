@@ -18,7 +18,7 @@ block content
                   .media-body
                     h4.media-heading #{item.from.name}
                     p #{item.content}
-                    //-if item.reply && item.reply.length > 0
+                    if item.reply && item.reply.length > 0
                       each reply in item.reply
                         .media
                           .pull-left
@@ -56,4 +56,4 @@ block content
           dd= movie.year
           dt 简介
           dd= movie.summary
-  //-script(src="/build/detail.min.js")
+  script(src="/js/detail.js")

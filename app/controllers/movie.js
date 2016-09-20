@@ -17,11 +17,17 @@ exports.detail= function(req, res) {
         Comment
             .find({movie:id})
             .populate('from','name')
+            // 根据关联的user表的_id查user表的name字段。这样在页面就可以拿到user表的name字段reply.from.name  
+            // from:{        
+            //     type:ObjectId,
+            //     ref:'User'
+            // },
+            .populate('reply.from reply.to','name')
             .exec(function(err,comments){
                 res.render('detail', {
                     title: '详情页' + movie.title,
-                    movie: movie,
-                    comments:comments
+                    movie: movie,//movie对象传走
+                    comments:comments//comments对象传走
                 })
             })
     })
