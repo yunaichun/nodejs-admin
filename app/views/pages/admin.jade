@@ -4,11 +4,22 @@ block content
 	.container
 		.row
 			form.form-horizontal(method='post',action='/admin/movie')
-				input(type='hidden',name='movie[_id]',value='#{movie._id}')
+				if movie._id
+					input(type='hidden',name='movie[_id]',value='#{movie._id}')
 				.form-group
 					label.col-sm-2.control-label(for="inputCatetory") 电影分类
 					.col-sm-10
-						input#inputCatetory.form-control(type="text", name="movie[catetory]", value=movie.catetory)
+						input#inputCatetory.form-control(type="text", name="movie[catetoryName]", value=movie.catetoryName)
+				.form-group
+					label.col-sm-2.control-label 分类选择
+					each cat in catetories
+						label.radio-inline
+							if movie._id
+								input(type='radio',name='movie[catetory]',value='#{cat._id}',checked=cat._id.toString()==movie.catetory.toString())
+								| #{cat.name}
+							else
+								input(type='radio',name='movie[catetory]',value='#{cat._id}')
+								| #{cat.name}
 				.form-group
 					label.col-sm-2.control-label(for="inputTitle") 电影名字
 					.col-sm-10

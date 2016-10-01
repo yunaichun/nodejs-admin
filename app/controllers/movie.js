@@ -4,6 +4,8 @@ var Movie = require('../models/movie');
 var Comment = require('../models/comment');
 //引用underscore模块（修改替换）
 var _ = require('underscore');
+//电影分类
+var Catetory = require('../models/catetory');
 
 //detail jade【电影详情页-->渲染数据】
 exports.detail= function(req, res) {
@@ -38,32 +40,44 @@ exports.detail= function(req, res) {
 //admin jade【添加电影页-->渲染空数据】
 exports.new= function(req, res) {
         //需要有默认的值（因为修改也用了此页面，所以添加的时候默认渲染为空）
-        res.render('admin', {
-            title: '后台录入页',
-            movie: {
-                title: '',
-                doctor: '',
-                country: '',
-                year: '',
-                poster: '',
-                flash: '',
-                summary: '',
-                language: ''
-            }
+        // res.render('admin', {
+        //     title: '后台录入页',
+        //     movie: {
+        //         title: '',
+        //         doctor: '',
+        //         country: '',
+        //         year: '',
+        //         poster: '',
+        //         flash: '',
+        //         summary: '',
+        //         language: ''
+        //     }
+        // })
+        Catetory.find({},function(err,catetories){
+            res.render('admin', {
+                title: '后台录入页',
+                catetories:catetories,//来自查询的结果
+                movie: {}
+            })
         })
 }
 //【修改电影页-->渲染数据】
 //admin update movie(列表页点击更新，即修改-->将查询到的数据打印到后台录入页)
 exports.update= function(req, res) {
-        var id = req.params.id;
-        if (id) {
-            Movie.findById(id, function(err, movie) {
+    var id = req.params.id;
+    if (id) {
+        //根据电影id查询此记录
+        Movie.findById(id, function(err, movie) {
+            //查询到所有的分类，可以到页面去渲染
+            Catetory.find({},function(err,catetories){
                 res.render('admin', {
                     title: '后台更新页',
-                    movie: movie
+                    movie: movie,
+                    catetories:catetories
                 })
-            })
-        }
+            }) 
+        })
+    }
 }
 //admin post movie【新增、修改电影-->提交表单保存】
 exports.save=function(req, res) {
@@ -91,8 +105,32 @@ exports.save=function(req, res) {
             })
         })
     } else { //新增
-        //调用模型（构造函数，传入电影数据）
+       
+ // //调用模型（构造函数，传入电影数据）
+        // _movie = new Movie({
+        //     title: movieObj.title, //标题
+        //     doctor: movieObj.doctor, //导演
+        //     language: movieObj.language, //语言
+        //     country: movieObj.country, //国家
+        //     summary: movieObj.summary, //简介
+        //     flash: movieObj.flash, //视频地址
+        //     poster: movieObj.poster, //海报地址
+        //     year: movieObj.year, //上映时间
+        // })
+
+        // //调用save方法，第二个参数是回调
+        // _movie.save(function(err, movie) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     //页面重定向到详情页面
+        //     res.redirect('/movie/' + movie.id);
+        // })
+
+         //_movie = new Movie(movieObj)
+        //保存电影之后需要将电影id保存在分类列表中去
         _movie = new Movie({
+            catetory:movieObj.catetory, //匪类id
             title: movieObj.title, //标题
             doctor: movieObj.doctor, //导演
             language: movieObj.language, //语言
@@ -102,18 +140,31 @@ exports.save=function(req, res) {
             poster: movieObj.poster, //海报地址
             year: movieObj.year, //上映时间
         })
+       
+        //获取从前台传来的分类name
+        var catetoryId=_movie.catetory;
+        console.log(catetoryId);
 
         //调用save方法，第二个参数是回调
         _movie.save(function(err, movie) {
+            console.log(movie);
             if (err) {
                 console.log(err);
             }
-            //页面重定向到详情页面
-            res.redirect('/movie/' + movie.id);
+            
+            //再在分类表中根据分类id查到此条记录，将此电影id添加进去
+            Catetory.findById(catetoryId,function(err,catetory){
+                //查找到此条分类记录，将电影idpush进去
+                catetory.movies.push(movie._id);
+                //磁性保存操作
+                catetory.save(function(err,catetory){
+                    //页面重定向到详情页面
+                    res.redirect('/movie/' + movie._id);
+                })
+            });          
         })
     }
 }
-
 
 
 //list jade【电影列表页-->渲染数据】
