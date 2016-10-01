@@ -131,7 +131,8 @@ exports.save=function(req, res) {
          //_movie = new Movie(movieObj)
         //保存电影之后需要将电影id保存在分类列表中去
         _movie = new Movie({
-            catetory:movieObj.catetory, //匪类id
+            catetory:movieObj.catetory, //分类id(选择的)
+            //catetoryName:movieObj.catetoryName, //自己新增的
             title: movieObj.title, //标题
             doctor: movieObj.doctor, //导演
             language: movieObj.language, //语言
@@ -145,24 +146,42 @@ exports.save=function(req, res) {
         //获取从前台传来的分类name
         var catetoryId=_movie.catetory;
         console.log("前台返回的分类id"+catetoryId);
-
+        //获取从前台传来的分类name
+        var catetoryName=movieObj.catetoryName;
         //调用save方法，第二个参数是回调
         _movie.save(function(err, movie) {
             console.log(movie);
             if (err) {
                 console.log(err);
             }
-            
-            //再在分类表中根据分类id查到此条记录，将此电影id添加进去
-            Catetory.findById(catetoryId,function(err,catetory){
-                //查找到此条分类记录，将电影idpush进去
-                catetory.movies.push(movie._id);
-                //磁性保存操作
-                catetory.save(function(err,catetory){
-                    //页面重定向到详情页面
-                    res.redirect('/movie/' + movie._id);
+            //电影分类是勾选的（在分类模块已经新增过）
+            if(catetoryId){
+                //再在分类表中根据分类id查到此条记录，将此电影id添加进去
+                Catetory.findById(catetoryId,function(err,catetory){
+                    //查找到此条分类记录，将电影idpush进去
+                    catetory.movies.push(movie._id);
+                    //磁性保存操作
+                    catetory.save(function(err,catetory){
+                        //页面重定向到详情页面
+                        res.redirect('/movie/' + movie._id);
+                    })
+                });      
+            }else if(catetoryName){//直接在新增电影页面添加电影分类
+                var catetory=new Catetory({
+                    name:catetoryName,//前台获取
+                    movies:[movie._id]//后台存储之后返回的
                 })
-            });          
+                //新增电影分类
+                catetory.save(function(err,catetory){
+                    //将此时保存电影分类返回的id赋值给现在要保存的电影
+                    _movie.catetory=catetory._id;
+                    //第二次保存电影（将分类存进去）
+                    movie.save(function(err,movie){
+                        //跳转
+                        res.redirect('/movie/'+movie._id);
+                    })
+                })
+            } 
         })
     }
 }

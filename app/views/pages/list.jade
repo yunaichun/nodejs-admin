@@ -6,6 +6,7 @@ block content
 			table.table.table-hover.table-bodered
 				thead
 					tr
+						th 电影分类ID
 						th 电影名字
 						th 导演
 						th 国家
@@ -17,6 +18,7 @@ block content
 				tdody
 					each item in movies
 						tr(class='item-id-#{item._id}')
+							td #{item.catetory}
 							td #{item.title}
 							td #{item.doctor}
 							td #{item.country}
