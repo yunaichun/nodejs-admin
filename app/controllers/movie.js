@@ -83,12 +83,13 @@ exports.update= function(req, res) {
 exports.save=function(req, res) {
     //前台是否传入id字段
     var id = req.body.movie._id;
-    console.log(id);
+    console.log("id是否存在判断新增"+id);
     //拿到movie对象
     var movieObj = req.body.movie;
     //定义修改或者保存实体
     var _movie;
-    if (id !== 'undefined') { //修改
+    if (id) { //修改
+        console.log('id存在');
         Movie.findById(id, function(err, movie) {
             if (err) {
                 console.log(err);
@@ -105,7 +106,7 @@ exports.save=function(req, res) {
             })
         })
     } else { //新增
-       
+        console.log('id不存在');
  // //调用模型（构造函数，传入电影数据）
         // _movie = new Movie({
         //     title: movieObj.title, //标题
@@ -143,7 +144,7 @@ exports.save=function(req, res) {
        
         //获取从前台传来的分类name
         var catetoryId=_movie.catetory;
-        console.log(catetoryId);
+        console.log("前台返回的分类id"+catetoryId);
 
         //调用save方法，第二个参数是回调
         _movie.save(function(err, movie) {
