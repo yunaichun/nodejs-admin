@@ -6,7 +6,8 @@ var User = require('../app/controllers/user');
 var Movie=require('../app/controllers/movie'); 
 //评论
 var Comment=require('../app/controllers/comment'); 
-
+//分类
+var Catetory=require('../app/controllers/catetory'); 
 
 module.exports = function(app) {
     //预处理，在网站任何位置都可以判断用户的登录状态
@@ -61,6 +62,10 @@ module.exports = function(app) {
     
     //评论
     app.post('/user/comment',User.signinRequired, Comment.save);
-    
 
+
+    //分类录入
+    app.get('/admin/catetory/new',User.signinRequired, Catetory.new);
+    app.post('/admin/catetory',User.signinRequired,Catetory.save);
+    app.get('/admin/catetory/list',User.signinRequired,Catetory.list);
 }

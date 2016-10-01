@@ -5,17 +5,12 @@ var Schema=mongoose.Schema;
 //关联文档数据类型（主键）
 var ObjectId=Schema.Types.ObjectId;
 
+
 //利用mongoose定义模式。其中meta指的是记录创建的时间
-var MovieSchema=new Schema({
-	catetory:{type:ObjectId,ref:'Catetory'},//电影分类
-	title:String,//标题
-	doctor:String,//导演
-	language:String,//语言
-	country:String,//国家
-	summary:String,//简介
-	flash:String,//视频地址
-	poster:String,//海报地址
-	year:Number,//上映时间
+var CatetorySchema=new Schema({
+	name:String,//分类名字
+	movies:[{type:ObjectId,ref:'Movie'}],//分类下的电影id
+
 	meta:{
 		createAt:{
 			type:Date,
@@ -29,7 +24,7 @@ var MovieSchema=new Schema({
 })
 
 //为模式添加方法。每次在存储数据之前都会调用此方法
-MovieSchema.pre('save',function(next){
+CatetorySchema.pre('save',function(next){
 	if(this.isNew){
 		this.meta.creataAt=this.meta.updateAt;
 	}else{
@@ -40,7 +35,7 @@ MovieSchema.pre('save',function(next){
 })
 
 //静态方法，不会直接与数据库交互。模型实例化以后才会具有此方法
-MovieSchema.statics={
+CatetorySchema.statics={
 	//查询全部：跟新时间排序
 	fetch:function(cb){
 		return this
@@ -57,4 +52,4 @@ MovieSchema.statics={
 	}
 }
 //导出模块
-module.exports=MovieSchema;
+module.exports=CatetorySchema;
