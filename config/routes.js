@@ -68,4 +68,9 @@ module.exports = function(app) {
     app.get('/admin/catetory/new',User.signinRequired, Catetory.new);
     app.post('/admin/catetory',User.signinRequired,Catetory.save);
     app.get('/admin/catetory/list',User.signinRequired,Catetory.list);
+
+
+
+    //首页电影分类列表
+    app.get('/results',Index.search);
 }
