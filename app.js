@@ -5,7 +5,9 @@ var bodyParser = require('body-parser');
 //新版的express中已经不包含cookieparser【sessionid】
 var cookieParser = require('cookie-parser');
 //新版的express中已经不包含session【store对象】
-var session=require('express-session')
+var session=require('express-session');
+//新版的express中已经不包含multipart
+var multipart = require('connect-multiparty');
 //打印错误
 var morgan = require('morgan');
 
@@ -39,6 +41,8 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 //session依赖的中间件
 app.use(cookieParser());
+//增加中间件（处理文件上传）
+app.use(multipart());
 //添加session
 app.use(session({
 	//防止篡改cookie值

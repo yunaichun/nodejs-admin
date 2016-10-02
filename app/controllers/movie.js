@@ -2,10 +2,14 @@
 var Movie = require('../models/movie');
 //评论页面
 var Comment = require('../models/comment');
-//引用underscore模块（修改替换）
-var _ = require('underscore');
 //电影分类
 var Catetory = require('../models/catetory');
+//引用underscore模块（修改替换）
+var _ = require('underscore');
+//文件系统
+var fs=require('fs');
+//路径模块
+var path=require('path');
 
 //detail jade【电影详情页-->渲染数据】
 exports.detail= function(req, res) {
@@ -79,6 +83,55 @@ exports.update= function(req, res) {
         })
     }
 }
+
+
+//增加图片上传功能
+exports.savePoster=function(req,res,next){
+    //通过name名称拿到file
+    var posterData=req.files.uploadPoster;
+    console.log('前台传递的file:');
+    console.log(req.files);
+
+    //拿到路径（服务器缓存地址）
+    var filePath=posterData.path;
+    //拿到原始名称
+    var originalFilename=posterData.originalFilename;
+    //有图片传过来
+    if(originalFilename){
+        //读取文件路径中的二进制数据,拿到海报的数据
+        fs.readFile(filePath,function(err,data){
+            //申明时间戳，用来命名新的图片的名称
+            var timestamp=Date.now();
+            console.log('前台传递的文件类型'+posterData.type)
+            //取文件扩展名（image/jpeg）
+            var type=posterData.type.split('/')[1];
+            //新名称
+            var poster=timestamp+'.'+type;
+            //存入服务器
+            //__dirname指的是当前movie所在的目录
+            //存入上两层public目录下的upload目录下
+            //第二个参数是指存入的根目录相对当前目录的位置
+            //第三个参数是具体的文件路径+文件名称
+            var newPath=path.join(__dirname,'../../','/public/upload/'+poster);
+            //写入文件
+            //第一个参数是文件路径
+            //第二个参数是读取的data
+            fs.writeFile(newPath,data,function(err){
+                //将写入成功后的poster的名字挂到request上。下一个流程后台可以请求到
+                req.poster=poster;
+                //进入下一个流程
+                next();
+            });
+
+        });
+    }else{
+        //如果没有文件上传不做任何处理，直接进入下一个流程
+        //根据路由可知，进入Movie.sava流程
+        next();
+    }
+
+}
+
 //admin post movie【新增、修改电影-->提交表单保存】
 exports.save=function(req, res) {
     //前台是否传入id字段
@@ -88,6 +141,16 @@ exports.save=function(req, res) {
     var movieObj = req.body.movie;
     //定义修改或者保存实体
     var _movie;
+
+//处理文件上传
+//上一个流程存储了一个新的海报地址
+    if(req.poster){
+        //重写movieObj中原有的地址
+        movieObj.poster=req.poster;
+    }
+console.log('文件地址'+req.poster);
+
+
     if (id) { //修改
         console.log('id存在');
         Movie.findById(id, function(err, movie) {
@@ -189,16 +252,28 @@ exports.save=function(req, res) {
 
 //list jade【电影列表页-->渲染数据】
 exports.list= function(req, res) {
-        //调用方法（回调方法中拿到返回的movies数组）
-        Movie.fetch(function(err, movies) {
-            if (err) {
-                console.log(err);
-            }
-            //渲染首页模板
-            res.render('list', {
-                title: '列表页',
-                movies: movies
-            })
+        // //调用方法（回调方法中拿到返回的movies数组）
+        // Movie.fetch(function(err, movies) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     //渲染首页模板
+        //     res.render('list', {
+        //         title: '列表页',
+        //         movies: movies
+        //     })
+        // })
+    Movie.find({})
+        .populate('catetory', 'name')
+        .exec(function(err, movies) {
+          if (err) {
+            console.log(err)
+          }
+
+          res.render('list', {
+            title: '列表页',
+            movies: movies
+          })
         })
 }
 //list delete movie【电影列表页-->异步删除click】

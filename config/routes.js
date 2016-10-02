@@ -52,7 +52,8 @@ module.exports = function(app) {
     //admin update movie(列表页点击更新，即修改-->将查询到的数据打印到后台录入页)
     app.get('/admin/movie/update/:id',User.signinRequired,User.adminRequired, Movie.update);
     //admin post movie【新增、修改电影-->提交表单保存】
-    app.post('/admin/movie',User.signinRequired,User.adminRequired, Movie.save);
+    //增加中间件Movie.savePoster，判断文件是否已经上传，增加存储图片功能
+    app.post('/admin/movie',User.signinRequired,User.adminRequired, Movie.savePoster,Movie.save);
     //list jade【电影列表页-->渲染数据】
     app.get('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.list);
     //list delete movie【电影列表页-->异步删除click】
