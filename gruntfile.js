@@ -15,7 +15,52 @@ module.exports = function(grunt) {
                         livereload: true
                     }
                 },
+                // uglify: {
+                //     files: ['public/**/*.js'],
+                //     tasks: ['jshint'],
+                //     options: {
+                //       livereload: true
+                //     }
+                //   },
+                //   styles: {
+                //     files: ['public/**/*.less'],
+                //     tasks: ['less'],
+                //     options: {
+                //       nospawn: true
+                //     }
+                //   }
             },
+            // jshint: {
+            //   options: {
+            //     jshintrc: '.jshintrc',
+            //     ignores: ['public/libs/**/*.js']
+            //   },
+            //   all: ['public/js/*.js', 'test/**/*.js', 'app/**/*.js']
+            // },
+
+            // less: {
+            //   development: {
+            //     options: {
+            //       compress: true,
+            //       yuicompress: true,
+            //       optimization: 2
+            //     },
+            //     files: {
+            //       'public/build/index.css': 'public/less/index.less'
+            //     }
+            //   }
+            // },
+
+            // uglify: {
+            //   development: {
+            //     files: {
+            //       'public/build/admin.min.js': 'public/js/admin.js',
+            //       'public/build/detail.min.js': [
+            //         'public/js/detail.js'
+            //       ]
+            //     }
+            //   }
+            // },
             //restart app.js
             nodemon: {
                 dev: {
@@ -34,6 +79,14 @@ module.exports = function(grunt) {
                     }
                 }
             },
+            //配置单元测试任务
+            mochaTest: {
+              options: {
+                reporter: 'spec'
+              },
+              //指定测试目录  test下所有js目录
+              src: ['test/**/*.js']
+            },
             //speedUp task
             concurrent: {
                 tasks: ['nodemon', 'watch'],
@@ -48,9 +101,18 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     //speedUp task
     grunt.loadNpmTasks('grunt-concurrent');
+    //加载单元测试模块
+    grunt.loadNpmTasks('grunt-mocha-test');
+    // grunt.loadNpmTasks('grunt-contrib-less')
+    // grunt.loadNpmTasks('grunt-contrib-uglify')
+    // grunt.loadNpmTasks('grunt-contrib-jshint')
+
 
     //aviod warning TO FORCE TASK
     grunt.option('force', true);
     //default task
-    grunt.registerTask('default', ['concurrent'])
+    grunt.registerTask('default', ['concurrent']);
+
+    //注册任务
+    grunt.registerTask('test',  ['mochaTest']);
 }

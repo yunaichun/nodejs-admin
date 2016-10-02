@@ -11,17 +11,21 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-session": "^1.14.1",
+    "grunt-mocha-test": "^0.13.2",
     "jade": "^1.11.0",
     "moment": "^2.15.0",
     "mongoose": "^4.6.0",
     "morgan": "^1.7.0",
+    "should": "^11.1.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-concurrent": "^2.3.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-nodemon": "^0.4.2"
+    "grunt-mocha-test": "^0.13.2",
+    "grunt-nodemon": "^0.4.2",
+    "mocha": "^3.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

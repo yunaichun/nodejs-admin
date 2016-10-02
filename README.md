@@ -5,6 +5,8 @@ express
  -npm install express-session
  -npm install connect-multiparty
  -npm install morgan
+ -npm install grunt-mocha-test
+ -npm install should
 
 mongoDB
  -npm install mongoose
