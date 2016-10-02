@@ -9,6 +9,11 @@ var Comment=require('../app/controllers/comment');
 //分类
 var Catetory=require('../app/controllers/catetory'); 
 
+
+//新版的express中已经不包含multipart
+var multipart = require('connect-multiparty');
+var multipartMiddleware=multipart();
+
 module.exports = function(app) {
     //预处理，在网站任何位置都可以判断用户的登录状态
     app.use(function(req, res, next) {
@@ -53,7 +58,7 @@ module.exports = function(app) {
     app.get('/admin/movie/update/:id',User.signinRequired,User.adminRequired, Movie.update);
     //admin post movie【新增、修改电影-->提交表单保存】
     //增加中间件Movie.savePoster，判断文件是否已经上传，增加存储图片功能
-    app.post('/admin/movie',User.signinRequired,User.adminRequired, Movie.savePoster,Movie.save);
+    app.post('/admin/movie',multipartMiddleware,User.signinRequired,User.adminRequired, Movie.savePoster,Movie.save);
     //list jade【电影列表页-->渲染数据】
     app.get('/admin/movie/list',User.signinRequired,User.adminRequired,Movie.list);
     //list delete movie【电影列表页-->异步删除click】

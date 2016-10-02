@@ -6,9 +6,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 //新版的express中已经不包含session【store对象】
 var session=require('express-session');
-//新版的express中已经不包含multipart
-var multipart = require('connect-multiparty');
-//打印错误
+//新版的express中已经不包含logger。打印错误
 var morgan = require('morgan');
 
 //请求样式（在bower安装包中的静态资源）
@@ -41,12 +39,14 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 //session依赖的中间件
 app.use(cookieParser());
-//增加中间件（处理文件上传）
-app.use(multipart());
+// //增加中间件（处理文件上传）
+// app.use(multipart());
 //添加session
 app.use(session({
 	//防止篡改cookie值
 	secret:'imooc',
+  resave:false,//强制session被存储，默认值是true（建议写出来）
+  saveUninitialized:true,//参数需要写上去的
 	//session持久化。传入第一个参数是mongoDB数据库地址。
 	store:new mongoStore({
 		url:'mongodb://localhost:12345/imooc',
