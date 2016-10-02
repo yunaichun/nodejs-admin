@@ -16,6 +16,11 @@ var MovieSchema=new Schema({
 	flash:String,//视频地址
 	poster:String,//海报地址
 	year:Number,//上映时间
+	//访客统计，初始值是0
+	pv:{
+			type:Number,
+			default:0
+		},
 	meta:{
 		createAt:{
 			type:Date,

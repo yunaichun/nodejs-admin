@@ -16,6 +16,12 @@ exports.detail= function(req, res) {
     //:id指的是可以获取前台传递的值
     var id = req.params.id;
     Movie.findById(id, function(err, movie) {
+        //访客统计量计算，进入详情页面自增1
+        Movie.update({_id:id},{$inc:{pv:1}},function(err){
+            if(err){
+                console.log(err);
+            }
+        })
         //-----关联查询用户名------//
         //1、查找到此电影id
         //2、populate关联查询user的数据from在模型中已经定义，来自User（ref:'User'）
