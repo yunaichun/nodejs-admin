@@ -10,7 +10,7 @@ exports.signup= function(req, res) {
         var _user = req.body.user;
         //打印接收时保存前的密码
         console.log(_user);
-        var user = new User(_user);
+        var user1 = new User(_user);
 
         //判断是否重复name
         User.findOne({ name: _user.name }, function(err, user) {
@@ -18,19 +18,21 @@ exports.signup= function(req, res) {
                 console.log(err);
             }
             if (user) {
-                console.log('userName is exist');
+                console.log('用户名已经存在');
                 //如果此用户已经注册跳转到登录页面
                 return res.redirect('/signin');
             } else {
+                console.log('用户名不存在');
                 //没有此用户才执行新增操作
-                user.save(function(err, user) {
+                user1.save(function(err, user2) {
+                    console.log(user2);
                     if (err) {
                         console.log(err);
                     }
                     //注册成功跳转到首页
-                    res.render('/');
+                    res.redirect('/');
                     //接收保存后的对象
-                    console.log(user);
+                    
                 })
             }
         })
