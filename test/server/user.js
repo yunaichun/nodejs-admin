@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const getRandomString = require('../utils/getRandomString');
 // const app = require('../../app');
-const User = require('../../app/models/user');
+const User = require('../../server/app/models/user');
 
 let user = {};
 describe('Test User Model Logic', () => {

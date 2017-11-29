@@ -23,11 +23,11 @@ mongoose.connect('mongodb://localhost:6666/OnlineMovie', err => {
     console.log('connect database error -->', err);
     process.exit(1);
   }
-  console.log('connect database success');
+  console.log('connect database success'); 
 });
 
 
-app.set('views', './app/views/pages');//设置模板根目录
+app.set('views', './server/app/views/pages');//设置模板根目录
 app.set('view engine', 'jade');//设置模板引擎
 app.use(express.static(path.join(__dirname, 'public')));//获取静态资源。静态资源目录
 app.locals.moment = require('moment');//本地moment
@@ -60,7 +60,7 @@ app.use(session({//添加session中间件
 /**
  * 引入路由
  */
-require('./config/routes')(app);
+require('./routers/index')(app);
 
 app.listen(port);
 console.log(`server started on port ${port}`);

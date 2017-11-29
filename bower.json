@@ -11,9 +11,8 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "public/libs",
-    "test",
-    "tests"
+    "**/public/libs",
+    "test"
   ],
   "dependencies": {
     "bootstrap": "^3.3.7"

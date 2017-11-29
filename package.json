@@ -27,7 +27,7 @@
     "nodemon": "^1.12.1"
   },
   "scripts": {
-    "server": "nodemon --harmony app.js --config nodemonrc.json",
+    "server": "nodemon --harmony ./server/index.js --config nodemonrc.json",
     "test": "mocha --compilers js:babel-core/register ./test/ --recursive"
   },
   "author": "ncyu",
