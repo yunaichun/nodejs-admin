@@ -9,22 +9,22 @@ exports.signin = function (req, res) {
     const name = user.name;
     const password = user.password;
 
-    User.findOne({ name }, (err, hasUser) => {
-        if (err) {
-            console.log(err);
+    User.findOne({ name }, (err1, res1) => {
+        if (err1) {
+            console.log(err1);
         }
-        if (!hasUser) { //登录时不存在此用户重定向到注册页面
+        if (!res1) { //登录时不存在此用户重定向到注册页面
             return res.redirect('/signup');
         }
         //传入明文密码，与Schema文档实例中的user、password进行匹配
-        hasUser.comparePassword(password, (err2, isMatch) => {
+        res1.comparePassword(password, (err2, isMatch) => {
             if (err2) {
-                console.log(err);
+                console.log(err2);
             }
             if (!isMatch) {
                 return res.redirect('/signin');
             } 
-            req.session.user = hasUser;//将用户登录状态存入session内存中
+            req.session.user = res1;//将用户登录状态存入session内存中
             res.redirect('/');
         });
     });
@@ -34,19 +34,19 @@ exports.signin = function (req, res) {
  */
 exports.signup = function (req, res) {
     const user = req.body.user;//req.body获取post表单
-    User.findOne({ name: user.name }, (err, hasUser) => {
-        if (err) {
-            console.log(err);
+    User.findOne({ name: user.name }, (err1, res1) => {
+        if (err1) {
+            console.log(err1);
         }
-        if (hasUser) {
+        if (res1) {
             return res.redirect('/signin');
         } 
         const newUser = new User(user);
-        newUser.save((saveErr, saveSuccess) => {
-            if (saveErr) {
-                console.log(saveErr);
+        newUser.save((err2, res2) => {
+            if (err2) {
+                console.log(err2);
             }
-            console.log(saveSuccess);
+            console.log(res2);
             res.redirect('/');
         });
     });
@@ -66,13 +66,13 @@ exports.listuser = function (req, res) {
     if (!user) { 
         return res.redirect('/signin');
     }
-    User.fetch((err, users) => {
-        if (err) {
-            console.log(err);
+    User.fetch((err1, res1) => {
+        if (err1) {
+            console.log(err1);
         }
         res.render('userlist', {
             title: '用户列表页',
-            users
+            users: res1
         });
     });
 };
