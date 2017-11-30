@@ -9,7 +9,7 @@ exports.signin = function (req, res) {
     const name = user.name;
     const password = user.password;
     
-    User.findOne({ name }, (err1, res1) => {
+    User.fetchAll({ name }, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }
@@ -34,7 +34,8 @@ exports.signin = function (req, res) {
  */
 exports.signup = function (req, res) {
     const user = req.body.user;//req.body获取post表单
-    User.findOne({ name: user.name }, (err1, res1) => {
+    const name = user.name;
+    User.fetchAll({ name }, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }
@@ -66,7 +67,7 @@ exports.listuser = function (req, res) {
     if (!user) { 
         return res.redirect('/signin');
     }
-    User.fetch((err1, res1) => {
+    User.fetchAll({}, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }

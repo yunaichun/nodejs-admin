@@ -55,10 +55,9 @@ MovieSchema.statics = {
 	},
 	//查询单条数据
 	findById(id, cb) {
-		//执行回调方法
 		return this
 			.findOne({ _id: id })
-			.exec(cb);
+			.exec(cb);//执行查询完后，将调用回调cb函数：this.findOne({ _id: id }, cb)
 	}
 };
 module.exports = MovieSchema;

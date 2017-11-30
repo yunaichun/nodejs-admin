@@ -28,7 +28,7 @@
   },
   "scripts": {
     "server": "nodemon --harmony ./server/index.js --config nodemonrc.json",
-    "test": "mocha --compilers js:babel-core/register ./test/ --recursive"
+    "test": "mocha --compilers js:babel-core/register --require ./test/server/helper.js ./test/server/ --recursive"
   },
   "author": "ncyu",
   "license": "ISC"
