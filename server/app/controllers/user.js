@@ -8,7 +8,7 @@ exports.signin = function (req, res) {
     const user = req.body.user;
     const name = user.name;
     const password = user.password;
-
+    
     User.findOne({ name }, (err1, res1) => {
         if (err1) {
             console.log(err1);

@@ -1,7 +1,6 @@
-var mongoose=require('mongoose');
-var CommentSchema=require('../schemas/comment');
+const mongoose = require('mongoose');
+const CommentSchema = require('../schemas/comment');
 
-//编译生成模型（目前猜测第一个参数指的是数据库中对应的表名）
-var Comment=mongoose.model('Comment',CommentSchema);
-//导出模型
-module.exports=Comment;
+//编译生成模型: 第一个参数是数据库中对应表名
+const Comment = mongoose.model('Comment', CommentSchema);
+module.exports = Comment;

@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
 /**
  * 为Schema添加中间件，通过next()向下传递。
  * 文档实例每次保存之前的判断。可以通过this获取此实例。
- * 【此函数不能用箭头函数，不然获取不到此文档】
+ * 【此函数不能用箭头函数，不然获取不到此文档实例】
  */
 UserSchema.pre('save', function (next) {
 	if (this.isNew) {
@@ -65,7 +65,7 @@ UserSchema.pre('save', function (next) {
 });
 /**
  * 在Schema上的方法。一个文档实例上面的方法。
- * 可以通过this获取此实例。【】
+ * 可以通过this获取此实例。
  */
 UserSchema.methods = {
 	//第一个参数是用户传来的明文密码，第二个参数是回调函数
@@ -80,7 +80,7 @@ UserSchema.methods = {
 };
 /**
  * 在Model上的方法。直接在Model上面的静态方法
- * 可以通过this获取此Model
+ * 可以通过this获取此Model。可以对数据库操作
  */
 UserSchema.statics = {
 	//查询全部：按照更新时间排序
@@ -98,5 +98,4 @@ UserSchema.statics = {
 			.exec(cb);//执行上述查询，同时传入回调函数
 	}
 };
-
 module.exports = UserSchema;

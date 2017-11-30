@@ -1,77 +1,61 @@
-//模式Schmea相当于定义数据库字段
-var mongoose=require('mongoose');
-//通过Schema获取模式中的值
-var Schema=mongoose.Schema;
+const mongoose = require('mongoose');//模式Schmea相当于定义数据库字段
 //关联文档数据类型（主键）
-var ObjectId=Schema.Types.ObjectId;
-
-
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 //利用mongoose定义模式。其中meta指的是记录创建的时间
-var CommentSchema=new Schema({
-	//电影
-	//评论对应的电影id
-	movie:{
-		type:ObjectId,//值
-		ref:'Movie'//指向Movie模型
-	},
-	//评论来自谁
-	// detail页面中data-cid="#{item._id}"指的是主评论
-	// detail页面中data-tid="#{item.from._id}"指的是主评论的用户id
-	from:{
-		type:ObjectId,//值
-		ref:'User'//指向User模型
-	},
-	//评论内容
-	content:String,
+const CommentSchema = new mongoose.Schema({
+	movie: { type: ObjectId, ref: 'Movie' }, //评论对应的电影id
+	from: { type: ObjectId, ref: 'User' }, //评论对应的用户id
+	content: String, //评论内容
 	//回复体
-	reply:[{
-		//谁回复（回复人）
-		from:{type:ObjectId,ref:'User'},
-        //回复谁（被回复人）
-		to:{type:ObjectId,ref:'User'},
-		//回复内容
-		content:String
+	reply: [{
+		from: { type: ObjectId, ref: 'User' }, //谁回复（回复人）
+		to: { type: ObjectId, ref: 'User' }, //回复谁（被回复人）
+		content: String//回复内容
 	}],	
-	meta:{
-		createAt:{
-			type:Date,
-			default:Date.now()
+	meta: {
+		createAt: {
+			type: Date,
+			default: Date.now()
 		},
-		updateAt:{
-			type:Date,
-			default:Date.now()
+		updateAt: {
+			type: Date,
+			default: Date.now()
 		}
 	}
 });
-
-//为模式添加方法。每次在存储数据之前都会调用此方法
-CommentSchema.pre('save',function(next){
-	if(this.isNew){
-		this.meta.creataAt=this.meta.updateAt;
-	}else{
-		this.meta.updateAt=Date.now();
+/**
+ * 为Schema添加中间件，通过next()向下传递。
+ * 文档实例每次保存之前的判断。可以通过this获取此实例。
+ * 【此函数不能用箭头函数，不然获取不到此文档实例】
+ */
+CommentSchema.pre('save', function (next) {
+	if (this.isNew) {
+		this.meta.creataAt = this.meta.updateAt;
+	} else {
+		this.meta.updateAt = Date.now();
 	}
-    //调用静态方法，流程才能走下去
     next();
 });
-
-//静态方法，不会直接与数据库交互。模型实例化以后才会具有此方法
-CommentSchema.statics={
-	//查询全部：跟新时间排序
-	fetch:function(cb){
+/**
+ * 在Model上的方法。直接在Model上面的静态方法
+ * 可以通过this获取此Model。可以对数据库操作
+ */
+CommentSchema.statics = {
+	//查询全部：按照更新时间排序
+	fetch(cb) {
 		return this
-	      .find({})
-	      .sort('meta.updateAt')
-	      .exec(cb);
+			.find({})
+			.sort('meta.updateAt')
+			.exec(cb);
 	},
 	//查询单条数据
-	findById:function(id,cb){
+	findById(id, cb) {
 		//执行回调方法
-		 return this
-	      .findOne({_id: id})
-	      .exec(cb);
+		return this
+			.findOne({ _id: id })
+			.exec(cb);
 	}
 };
 //导出模块
-module.exports=CommentSchema;
+module.exports = CommentSchema;

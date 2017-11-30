@@ -1,47 +1,44 @@
 //电影页面模型
-var Catetory = require('../models/catetory');
+const Catetory = require('../models/catetory');
 
-
-
-//admin jade【添加电影页-->渲染空数据】
-exports.new= function(req, res) {
-        //需要有默认的值（因为修改也用了此页面，所以添加的时候默认渲染为空）
-        res.render('catetory_admin', {
-            title: '后台分类录入页',
-            catetory:{}
-        })
-}
-
-//admin post movie【新增、修改电影-->提交表单保存】
-exports.save=function(req, res) {
-    //前台是否传入id字段
-    var _catetory = req.body.catetory;
-    var catetory = new Catetory(_catetory);
-
-    //调用save方法，第二个参数是回调
-    catetory.save(function(err, catetory) {
-        if (err) {
-            console.log(err);
+/**
+ * [save 保存电影分类]
+ */
+exports.save = function (req, res) {
+    const catetory = req.body.catetory;//req.body获取post表单
+    const newCatetory = new Catetory(catetory);
+    newCatetory.save((err1, res1) => {
+        if (err1) {
+            console.log(err1);
         }
+        console.log(res1);
         //页面重定向到f分类列表页面
         res.redirect('/admin/catetory/list');
-    })
+    });
+};
 
-}
+/**
+ * [list 分类列表]
+ */
+exports.list = function (req, res) {
+    Catetory.fetch((err1, res1) => {
+        if (err1) {
+            console.log(err1);
+        }
+        console.log(res1);
+        res.render('catetorylist', {
+            title: '分类列表页',
+            catetories: res1
+        });
+    });
+};
 
 
-
-//list jade【电影列表页-->渲染数据】
-exports.list= function(req, res) {
-        //调用方法（回调方法中拿到返回的movies数组）
-        Catetory.fetch(function(err, catetories) {
-            if (err) {
-                console.log(err);
-            }
-            //渲染首页模板
-            res.render('catetorylist', {
-                title: '分类列表页',
-                catetories: catetories
-            })
-        })
-}
+//添加电影分类，渲染空数据
+exports.new = function (req, res) {
+    //需要有默认的值（因为修改也用了此页面，所以添加的时候默认渲染为空）
+    res.render('catetory_admin', {
+        title: '后台分类录入页',
+        catetory: {}
+    });
+};
