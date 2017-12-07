@@ -21,7 +21,7 @@ exports.save = function (req, res) {
  * [list 分类列表]
  */
 exports.list = function (req, res) {
-    Catetory.fetch((err1, res1) => {
+    Catetory.selectAll({}, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }

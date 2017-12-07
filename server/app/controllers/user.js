@@ -9,7 +9,7 @@ exports.signin = function (req, res) {
     const name = user.name;
     const password = user.password;
     
-    User.fetchAll({ name }, (err1, res1) => {
+    User.selectAll({ name }, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }
@@ -35,7 +35,7 @@ exports.signin = function (req, res) {
 exports.signup = function (req, res) {
     const user = req.body.user;//req.body获取post表单
     const name = user.name;
-    User.fetchAll({ name }, (err1, res1) => {
+    User.selectAll({ name }, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }
@@ -67,7 +67,7 @@ exports.listuser = function (req, res) {
     if (!user) { 
         return res.redirect('/signin');
     }
-    User.fetchAll({}, (err1, res1) => {
+    User.selectAll({}, (err1, res1) => {
         if (err1) {
             console.log(err1);
         }

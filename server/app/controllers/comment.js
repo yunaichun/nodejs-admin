@@ -21,7 +21,7 @@ exports.save = function (req, res) {
     //如果有主评论cid（detail.js动态打印进去的）
     if (comment.cid) {
         //根据主评论的ID查找查找到这条评论记录
-        Comment.findById(comment.cid, (err1, res1) => {
+        Comment.selectOne({ _id: comment.cid }, (err1, res1) => {
             const reply = {
                 //现在登录用户为回复人form。name=c "comment[from]", value="#{user._id}"
                 from: comment.from,

@@ -85,13 +85,13 @@ UserSchema.methods = {
  */
 UserSchema.statics = {
 	//指定条件查询一条数据
-	fetchOne(obj, cb) {
+	selectOne(obj, cb) {
 		return this
 			.findOne(obj)
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.findOne({ _id: id }, cb)
 	},
 	//指定条件查询全部：按照更新时间排序
-	fetchAll(obj, cb) {
+	selectAll(obj, cb) {
 		return this
 			.find(obj)
 			.sort('meta.updateAt')
@@ -103,11 +103,17 @@ UserSchema.statics = {
 			.update(conditions, doc, { multi: true })
 			.exec(cb);//执行更新后，将调用回调cb函数。相当于User.update(conditions, doc, options, cb)
 	},
-	//删除指定条件下全部数据【传入空对象删除全部】
-	deleteAll(obj, cb) {
+	//指定条件删除一条数据【传入空对象删除全部】
+	deleteOne(obj, cb) {
 		return this
 			.remove(obj)
 			.exec(cb);//执行删除后，调用回调cb函数。相当于User.remove(obj, cb)或则newUser.remove(cb)
+	},
+	//根据某一字段批量删除【传入同一字段数组值】
+	deleteAllByIds(valueArray, cb) {
+		return this
+			.remove({ _id: { $in: valueArray } })
+			.exec(cb);//执行删除后，调用回调cb函数。相当于User.remove(obj, cb)
 	}
 };
 module.exports = UserSchema;

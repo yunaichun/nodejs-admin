@@ -42,18 +42,30 @@ CommentSchema.pre('save', function (next) {
  * 可以通过this获取此Model。可以对数据库操作
  */
 CommentSchema.statics = {
-	//查询全部：按照更新时间排序
-	fetch(cb) {
+	//指定条件查询一条数据
+	selectOne(obj, cb) {
 		return this
-			.find({})
-			.sort('meta.updateAt')
-			.exec(cb);
+			.findOne(obj)
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于Comment.findOne({ _id: id }, cb)
 	},
-	//查询单条数据
-	findById(id, cb) {
+	//指定条件查询全部：按照更新时间排序
+	selectAll(obj, cb) {
 		return this
-			.findOne({ _id: id })
-			.exec(cb);//执行查询完后，将调用回调cb函数：this.findOne({ _id: id }, cb)
+			.find(obj)
+			.sort('meta.updateAt')
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于Comment.find(obj, cb)
+	},
+	//更新指定条件下所有数据【传入空对象更新全部】
+	updateAll(conditions, doc, cb) {
+		return this
+			.update(conditions, doc, { multi: true })
+			.exec(cb);//执行更新后，将调用回调cb函数。相当于Comment.update(conditions, doc, options, cb)
+	},
+	//删除指定条件下全部数据【传入空对象删除全部】
+	deleteAll(obj, cb) {
+		return this
+			.remove(obj)
+			.exec(cb);//执行删除后，调用回调cb函数。相当于Comment.remove(obj, cb)或则newComment.remove(cb)
 	}
 };
 //导出模块
