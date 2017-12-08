@@ -18,7 +18,7 @@ exports.new = function (req, res) {
     });
 };
 /**
- * [list 查询全部电影，包含对应分类名]
+ * [list 查询全部电影，将分类id关联查询到分类名称]
  */
 exports.list = function (req, res) {
     Movie.find({})

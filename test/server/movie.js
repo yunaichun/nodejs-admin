@@ -31,14 +31,10 @@ describe('Test Movie Model Logic', () => {
 		});
 	});
 	afterEach((done) => {
-		Catetory.deleteOne({}, (err, res) => {
-			expect(err).to.be.equal(null);
-			expect(res.result.ok).to.be.equal(1);
-			Movie.deleteOne({}, (err1, res1) => {
-				expect(err1).to.be.equal(null);
-				expect(res1.result.ok).to.be.equal(1);
-				done();
-			});
+		Movie.deleteOne({}, (err1, res1) => {
+			expect(err1).to.be.equal(null);
+			expect(res1.result.ok).to.be.equal(1);
+			done();
 		});
 	});
 	describe('Save logic', () => {
@@ -182,6 +178,37 @@ describe('Test Movie Model Logic', () => {
 					expect(res1.catetory).to.be.equal(res.catetory);
 					done();
 				});
+			});
+		});
+	});
+	describe('Find logic', () => {
+		it('find special movie', (done) => {
+			const newMovie = new Movie(movie);
+			newMovie.save((err, res) => {
+				expect(err).to.be.equal(null);
+				expect(res.catetory).to.be.equal(movie.catetory);
+				Catetory.selectOne({ _id: movie.catetory }, (err1, res1) => {
+					expect(err1).to.be.equal(null);
+					expect(Array.isArray(res1.movies)).to.be.equal(true);
+					res1.movies.push(res._id);
+					Catetory.updateAll({ _id: movie.catetory }, { $set: { 'meta.updateAt': Date.now(), movies: res1.movies } }, (err2, res2) => {
+						expect(err2).to.be.equal(null);
+						expect(res2.ok).to.be.equal(1); //{ n: 1, nModified: 1, ok: 1 }
+						Movie.selectOne({ _id: res._id }, (err2, res2) => {
+							expect(err2).to.be.equal(null);
+							expect(res2.catetory.name).to.be.equal(res1.name);//重点在这里：关联查询
+							expect(Array.isArray(res2)).to.be.equal(false);//{}
+							done();
+						});
+					});
+				});
+			});
+		});
+		it('find all movies', (done) => {
+			Movie.selectAll({}, (err, res) => {
+				expect(err).to.be.equal(null);
+				expect(Array.isArray(res)).to.be.equal(true);//[{}……]
+				done();
 			});
 		});
 	});

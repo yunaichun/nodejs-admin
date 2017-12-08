@@ -79,12 +79,14 @@ MovieSchema.statics = {
 	selectOne(obj, cb) {
 		return this
 			.findOne(obj)
+			.populate('catetory', 'name')
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.findOne({ _id: id }, cb)
 	},
 	//指定条件查询全部：按照更新时间排序
 	selectAll(obj, conditions = {}, cb) {
 		return this
 			.find(obj, conditions)
+			.populate('catetory', 'name')
 			.sort('meta.updateAt')
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.find(obj, cb)
 	}
