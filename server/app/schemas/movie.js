@@ -4,7 +4,14 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 //利用mongoose定义模式。其中meta指的是记录创建的时间
 const MovieSchema = new mongoose.Schema({
-	catetory: { type: ObjectId, ref: 'Catetory' }, //电影对应的分类id
+	catetory: { 
+		type: ObjectId, 
+		ref: 'Catetory' 
+	}, //电影对应的分类id【选择已有的分类】
+	catetoryName: {
+		type: String, 
+		default: undefined
+	}, //分类标题【新增还没有添加的分类】
 	title: String, //标题
 	doctor: String, //导演
 	language: String, //语言
@@ -46,18 +53,21 @@ MovieSchema.pre('save', function (next) {
  * 可以通过this获取此Model。可以对数据库操作
  */
 MovieSchema.statics = {
-	//指定条件查询一条数据
-	selectOne(obj, cb) {
-		return this
-			.findOne(obj)
-			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.findOne({ _id: id }, cb)
+	//批量保存：导入EXCEL
+	saveAll(arrays, cb) {
+		this.model('Movie').create.apply(this, arrays, cb);
 	},
-	//指定条件查询全部：按照更新时间排序
-	selectAll(obj, cb) {
+	//指定条件删除一条数据【传入空对象删除全部】
+	deleteOne(obj, cb) {
 		return this
-			.find(obj)
-			.sort('meta.updateAt')
-			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.find(obj, cb)
+			.remove(obj)
+			.exec(cb);//执行删除后，调用回调cb函数。相当于Movie.update(conditions, doc, options, cb)
+	},
+	//根据某一字段批量删除【传入同一字段数组值】
+	deleteAllByIds(valueArray, cb) {
+		return this
+			.remove({ _id: { $in: valueArray } })
+			.exec(cb);//执行删除后，调用回调cb函数。相当于Movie.remove(obj, cb)
 	},
 	//更新指定条件下所有数据【传入空对象更新全部】
 	updateAll(conditions, doc, cb) {
@@ -65,11 +75,18 @@ MovieSchema.statics = {
 			.update(conditions, doc, { multi: true })
 			.exec(cb);//执行更新后，将调用回调cb函数。相当于Movie.update(conditions, doc, options, cb)
 	},
-	//删除指定条件下全部数据【传入空对象删除全部】
-	deleteAll(obj, cb) {
+	//指定条件查询一条数据
+	selectOne(obj, cb) {
 		return this
-			.remove(obj)
-			.exec(cb);//执行删除后，调用回调cb函数。相当于Movie.remove(obj, cb)或则newMovie.remove(cb)
+			.findOne(obj)
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.findOne({ _id: id }, cb)
+	},
+	//指定条件查询全部：按照更新时间排序
+	selectAll(obj, conditions = {}, cb) {
+		return this
+			.find(obj, conditions)
+			.sort('meta.updateAt')
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.find(obj, cb)
 	}
 };
 module.exports = MovieSchema;

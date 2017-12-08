@@ -1,4 +1,7 @@
 .DS_Store
 /node_modules/
-/**/public/libs/
+/test/utils/*.jpeg
+/test/utils/*.jpg
+/test/utils/*.xlsx
 yarn-error.log
+/**/public/libs/

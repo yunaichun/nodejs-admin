@@ -15,7 +15,7 @@ describe('Test Catetory Model Logic', () => {
 		};
 	});
 	afterEach((done) => {
-		Catetory.deleteOne({ name: catetory.name }, (err, res) => {
+		Catetory.deleteOne({}, (err, res) => {
 			expect(err).to.be.equal(null);
 			expect(res.result.ok).to.be.equal(1);
 			done();
@@ -56,53 +56,6 @@ describe('Test Catetory Model Logic', () => {
 			});
 		});
 	});
-	describe('Find logic', () => {
-		it('find special catetory', (done) => {
-			Catetory.selectOne({ name: catetory.name }, (err, res) => {
-				expect(err).to.be.equal(null);
-				expect(Array.isArray(res)).to.be.equal(false);//{}
-				done();
-			});
-		});
-		it('find all catetories', (done) => {
-			Catetory.selectAll({}, (err, res) => {
-				expect(err).to.be.equal(null);
-				expect(Array.isArray(res)).to.be.equal(true);//[{}……]
-				done();
-			});
-		});
-	});
-	describe('Update logic', () => {
-		it('update special catetory', (done) => { //异步测试
-			const newCatetory = new Catetory(catetory);
-			newCatetory.save((err, res) => {
-				expect(err).to.be.equal(null);
-				expect(res.name).to.be.equal(catetory.name);
-				Catetory.updateAll({ name: catetory.name }, { $set: { 'meta.updateAt': Date.now() } }, (err1, res1) => {
-					expect(err1).to.be.equal(null);
-					expect(res1.nModified).to.be.equal(1);//{ n: 1, nModified: 1, ok: 1 }
-					done();
-				});
-			});
-		});
-		it('update all catetories', (done) => { //异步测试
-			const newCatetory1 = new Catetory(catetory);
-			newCatetory1.save((err, res) => {
-				expect(err).to.be.equal(null);
-				expect(res.name).to.be.equal(catetory.name);
-				const newCatetory2 = new Catetory(catetory2);
-				newCatetory2.save((err1, res1) => {
-					expect(err1).to.be.equal(null);
-			    	expect(res1.name).to.be.equal(catetory2.name);
-					Catetory.updateAll({}, { $set: { 'meta.updateAt': Date.now() } }, (err2, res2) => {
-						expect(err2).to.be.equal(null);
-			    	    expect(res2.nModified).to.be.equal(2);//{ n: 2, nModified: 2, ok: 1 }
-						done();
-					});
-				});
-			});
-		});
-	});
 	describe('Remove logic', () => {
 		it('remove special catetory', (done) => { //异步测试
 			const newCatetory = new Catetory(catetory);
@@ -119,7 +72,7 @@ describe('Test Catetory Model Logic', () => {
 		it('remove all catetories by Promise', () => { //返回Promise
 			return Catetory.remove({})
 				.then((res) => {
-					expect(res.result.ok).to.be.equal(1);//{ result: { n: 1, ok: 1 } …… }
+					expect(res.result.ok).to.be.equal(1);//{ result: { n: 0, ok: 1 } …… }
 				});
 		});
 		it('remove all catetories by array of ids', (done) => { //异步测试
@@ -138,6 +91,65 @@ describe('Test Catetory Model Logic', () => {
 						done();
 					});
 				});
+			});
+		});
+	});
+	describe('Update logic', () => {
+		it('update special catetory by update methods', (done) => { //异步测试
+			const newCatetory = new Catetory(catetory);
+			newCatetory.save((err, res) => {
+				expect(err).to.be.equal(null);
+				expect(res.name).to.be.equal(catetory.name);
+				Catetory.updateAll({ _id: res._id }, { $set: { 'meta.updateAt': Date.now() } }, (err1, res1) => {
+					expect(err1).to.be.equal(null);
+					expect(res1.nModified).to.be.equal(1);//{ n: 1, nModified: 1, ok: 1 }
+					done();
+				});
+			});
+		});
+		it('update special catetory by save methods', (done) => { //异步测试
+			const newCatetory = new Catetory(catetory);
+			newCatetory.save((err, res) => {
+				expect(err).to.be.equal(null);
+				expect(res.name).to.be.equal(catetory.name);
+				res.save((err1, res1) => {
+					expect(err1).to.be.equal(null);
+					expect(res1.name).to.be.equal(res.name);
+					done();
+				});
+			});
+		});
+		it('update all catetories', (done) => { //异步测试
+			const newCatetory1 = new Catetory(catetory);
+			newCatetory1.save((err, res) => {
+				expect(err).to.be.equal(null);
+				expect(res.name).to.be.equal(catetory.name);
+				const newCatetory2 = new Catetory(catetory2);
+				newCatetory2.save((err1, res1) => {
+					expect(err1).to.be.equal(null);
+			    	expect(res1.name).to.be.equal(catetory2.name);
+					Catetory.updateAll({}, { $set: { 'meta.updateAt': Date.now() } }, (err2, res2) => {
+						expect(err2).to.be.equal(null);
+			    	    expect(res2.ok).to.be.equal(1);//{ n: 2, nModified: 2, ok: 1 }
+						done();
+					});
+				});
+			});
+		});
+	});
+	describe('Find logic', () => {
+		it('find special catetory', (done) => {
+			Catetory.selectOne({ name: catetory.name }, (err, res) => {
+				expect(err).to.be.equal(null);
+				expect(Array.isArray(res)).to.be.equal(false);//{}
+				done();
+			});
+		});
+		it('find all catetories', (done) => {
+			Catetory.selectAll({}, (err, res) => {
+				expect(err).to.be.equal(null);
+				expect(Array.isArray(res)).to.be.equal(true);//[{}……]
+				done();
 			});
 		});
 	});

@@ -39,6 +39,7 @@ const UserSchema = new mongoose.Schema({
  * 【此函数不能用箭头函数，不然获取不到此文档实例】
  */
 UserSchema.pre('save', function (next) {
+	console.log(this.isNew);
 	// determine whether this is the original save or the saving of an existing document (an update)
 	if (this.isNew) { //每次新增默认都是true的
 		this.meta.creataAt = this.meta.updateAt;
@@ -84,24 +85,9 @@ UserSchema.methods = {
  * 可以通过this获取此Model。可以对数据库操作
  */
 UserSchema.statics = {
-	//指定条件查询一条数据
-	selectOne(obj, cb) {
-		return this
-			.findOne(obj)
-			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.findOne({ _id: id }, cb)
-	},
-	//指定条件查询全部：按照更新时间排序
-	selectAll(obj, cb) {
-		return this
-			.find(obj)
-			.sort('meta.updateAt')
-			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.find(obj, cb)
-	},
-	//更新指定条件下所有数据【传入空对象更新全部】
-	updateAll(conditions, doc, cb) {
-		return this
-			.update(conditions, doc, { multi: true })
-			.exec(cb);//执行更新后，将调用回调cb函数。相当于User.update(conditions, doc, options, cb)
+	//批量保存：导入EXCEL
+	saveAll(arrays, cb) {
+		this.model('User').create.apply(this, arrays, cb);
 	},
 	//指定条件删除一条数据【传入空对象删除全部】
 	deleteOne(obj, cb) {
@@ -114,6 +100,25 @@ UserSchema.statics = {
 		return this
 			.remove({ _id: { $in: valueArray } })
 			.exec(cb);//执行删除后，调用回调cb函数。相当于User.remove(obj, cb)
+	},
+	//更新指定条件下所有数据【传入空对象更新全部】
+	updateAll(conditions, doc, cb) {
+		return this
+			.update(conditions, doc, { multi: true })
+			.exec(cb);//执行更新后，将调用回调cb函数。相当于User.update(conditions, doc, options, cb)
+	},
+	//指定条件查询一条数据
+	selectOne(obj, cb) {
+		return this
+			.findOne(obj)
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.findOne({ _id: id }, cb)
+	},
+	//指定条件查询全部：按照更新时间排序
+	selectAll(obj, conditions = {}, cb) {
+		return this
+			.find(obj, conditions)
+			.sort('meta.updateAt')
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.find(obj, cb)
 	}
 };
 module.exports = UserSchema;
