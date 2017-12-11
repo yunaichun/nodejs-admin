@@ -73,6 +73,21 @@ CatetorySchema.statics = {
 			.find(obj, conditions)
 			.sort('meta.updateAt')
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于Catetory.find(obj, cb)
+	},
+	//指定条件查询全部：按照更新时间排序
+	selectMoviesByCatetory(obj, conditions = {}, currentPage, pageSize, cb) {
+		return this
+			.find(obj, conditions)
+			.populate({ 
+				path: 'movies',
+				// select:'title poster', 
+				options: { 
+					skip: parseInt(currentPage - 1, 10) * parseInt(pageSize, 10),
+					limit: pageSize
+				}
+			})
+			.sort('meta.updateAt')
+			.exec(cb);//执行查询后，将调用回调cb函数。相当于Catetory.find(obj, cb)
 	}
 };
 module.exports = CatetorySchema;

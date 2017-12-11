@@ -218,5 +218,30 @@ describe('Test Movie Model Logic', () => {
 				done();
 			});
 		});
+		it('find movies by title', (done) => {
+			catetory = {
+				name: '未知分类' //获得长度16的字符串: 
+			};
+			const newCatetory = new Catetory(catetory);
+			//新增一个分类
+			newCatetory.save((err, res) => {
+				movie.catetory = res._id;
+				//在此分类下添加5个电影
+				Movie.create(movie, movie, movie, movie, movie, movie, (err1, res1) => {
+					Movie.selectAll({}, '_id', (err3, res3) => {
+						for (let i = 0; i < res3.length; i++) {
+							res.movies.push(res3[i]._id);
+						}
+						//将5个电影存入分类中
+						res.save((err4, res4) => {
+							//通过分类查找5个电影
+							Movie.selectMoviesByTitle('金刚狼', {}, 1, 5, (err5, res5) => {
+								done();
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 });
