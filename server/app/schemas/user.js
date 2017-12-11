@@ -108,9 +108,9 @@ UserSchema.statics = {
 			.exec(cb);//执行更新后，将调用回调cb函数。相当于User.update(conditions, doc, options, cb)
 	},
 	//指定条件查询一条数据
-	selectOne(obj, cb) {
+	selectOne(obj, conditions = {}, cb) {
 		return this
-			.findOne(obj)
+			.findOne(obj, conditions)
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于User.findOne({ _id: id }, cb)
 	},
 	//指定条件查询全部：按照更新时间排序

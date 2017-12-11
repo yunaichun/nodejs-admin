@@ -37,6 +37,9 @@ describe('Test Movie Model Logic', () => {
 			done();
 		});
 	});
+	after(() => {
+		Catetory.deleteOne({});
+	});
 	describe('Save logic', () => {
         /*  返回保存结果
 			{ 
@@ -181,6 +184,7 @@ describe('Test Movie Model Logic', () => {
 			});
 		});
 	});
+	//新增一个电影->分类里就需要再添加一个->开始查找电影【关联查询】
 	describe('Find logic', () => {
 		it('find special movie', (done) => {
 			const newMovie = new Movie(movie);
@@ -198,7 +202,10 @@ describe('Test Movie Model Logic', () => {
 							expect(err2).to.be.equal(null);
 							expect(res2.catetory.name).to.be.equal(res1.name);//重点在这里：关联查询
 							expect(Array.isArray(res2)).to.be.equal(false);//{}
-							done();
+							Movie.updateAll({ _id: res._id }, { $inc: { pv: 1 } }, (err3, res3) => { //访客统计量自增1
+								expect(err3).to.be.equal(null);
+								done();
+							});
 						});
 					});
 				});
