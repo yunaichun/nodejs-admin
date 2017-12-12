@@ -1,66 +1,45 @@
 const express = require('express');
-//新版的express中已经不包含bodyparser
-const bodyParser = require('body-parser');
-//新版的express中已经不包含cookieparser【sessionid】
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-//新版的express中已经不包含session【store对象】
 const session = require('express-session');
-const morgan = require('morgan');//请求日志
-const mongoose = require('mongoose');//mongoose对象工具模型
-//session持久化【传入session，不是express】
 const mongoStore = require('connect-mongo')(session);
-const path = require('path');//工具模块
+const bodyParser = require('body-parser');
+const routers = require('./routers/routers');
 
 const port = process.env.PORT || 3000;
 const app = express();
 
-
-/**
- * 连接本地数据库
- */
+/*连接本地数据库*/
 mongoose.connect('mongodb://localhost:6666/OnlineMovie', err => {
-  if (err) {
-    console.log('connect database error -->', err);
-    process.exit(1);
-  }
-  console.log('connect database success'); 
+	if (err) {
+		console.log('connect database error -->', err);
+		process.exit(1);
+	}
+	console.log('connect database success'); 
 });
 
-
-app.set('views', './server/app/views/pages');//设置模板根目录
-app.set('view engine', 'jade');//设置模板引擎
-app.use(express.static(path.join(__dirname, 'public')));//获取静态资源。静态资源目录
-app.locals.moment = require('moment');//本地moment
-
-if (app.get('env') === 'development') { // 如果是开发环境
-  app.set('showStackError', true);//打印错误
-  app.use(morgan(':method :url :status :response-time'));//请求日志：请求类型+请求地址+状态
-  app.locals.pretty = true;//可读性强，非压缩
-  mongoose.set('debug', true);//数据库的debug配置
+/*日志打印*/
+if (app.get('env') === 'development') { // process.env.NODE_ENV
+	app.set('showStackError', true);// 打印错误
+	app.use(morgan(':method :url :status :response-time'));//请求类型+请求地址+状态+响应时间
+	app.set('json spaces', 2);//返回更漂亮的JSON数据
+	mongoose.set('debug', true);//数据库的debug配置
 }
 
-
-/**
- *  bodyParser、cookieParser、session设置
- */
-app.use(bodyParser.urlencoded({ extended: true }));//表单格式化
-app.use(cookieParser());//session依赖的中间件
-// app.use(multipart());//增加中间件（处理文件上传）
-app.use(session({//添加session中间件
-	secret: 'OnlineMovie', //防止篡改cookie值
-  resave: false, //强制session被存储，默认值是true（建议写出来）
-  saveUninitialized: true, //参数需要写上去的
-	store: new mongoStore({//session持久化。传入第一个参数是mongoDB数据库地址。
-		url: 'mongodb://localhost:6666/OnlineMovie',
-		collection: 'sessions'
+/*cookieParser、session、bodyParser*/
+app.use(cookieParser('OnlineMovie'));//解析cookie，同时也是session依赖的中间件
+app.use(session({
+	secret: 'OnlineMovie', //防止篡改cookie值[签名，与上文中cookie设置的签名字符串一致，]
+	resave: false, //don't save session if unmodified【不想每次刷新页面就创建session】
+	saveUninitialized: true, //don't create session until something stored【不想每次刷新页面就创建session】
+	store: new mongoStore({ //session持久化
+		url: 'mongodb://localhost:6666/OnlineMovie'
 	})
 }));
+app.use(bodyParser.urlencoded({ extended: true }));//处理不同类型请求体+处理不同编码+处理不同压缩类型【解析form表单】
 
-
-/**
- * 引入路由
- */
-require('./routers/index')(app);
-
+/*引入路由*/
+app.use('/', routers);
 app.listen(port);
 console.log(`server started on port ${port}`);
