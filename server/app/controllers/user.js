@@ -1,6 +1,4 @@
 const User = require('../models/user');
-const fs = require('fs');
-const path = require('path');
 const xlsx = require('node-xlsx');
 const _ = require('underscore');
 

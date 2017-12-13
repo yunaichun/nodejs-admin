@@ -1,44 +1,138 @@
-//电影页面模型
 const Catetory = require('../models/catetory');
+const _ = require('underscore');
 
-/**
- * [save 保存电影分类]
- */
-exports.save = function (req, res) {
-    const catetory = req.body.catetory;//req.body获取post表单
+exports.insertCatetory = function (req, res) {
+    //req.body请求体;req.query查询参数;req.params动态路由
+    const catetory = req.query;
     const newCatetory = new Catetory(catetory);
     newCatetory.save((err1, res1) => {
         if (err1) {
-            console.log(err1);
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong!',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
         }
-        console.log(res1);
-        //页面重定向到f分类列表页面
-        res.redirect('/admin/catetory/list');
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
     });
 };
-
-/**
- * [list 分类列表]
- */
-exports.list = function (req, res) {
+exports.deleteCatetory = function (req, res) {
+    const id = req.params.id;
+    Catetory.deleteOne({ _id: id }, (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
+    });
+};
+exports.deleteCatetories = function (req, res) {
+    const ids = req.body.ids;//获取数组
+    Catetory.deleteAllByIds(ids, (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
+    });
+};
+exports.updateCatetory = function (req, res) {
+    const catetory = req.query;
+    const id = catetory.id;
+    Catetory.selectOne({ _id: id }, (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        if (!res1) {
+            const errorData = {
+                status: '201', 
+                msg: 'this catetory is not existed'
+            };
+            res.end(JSON.stringify(errorData));
+        } else {
+            const updateCatetory = _.extend(res1, catetory);
+            updateCatetory.save((err2, res2) => {
+                if (err1) {
+                    const errorData = {
+                        status: '500', 
+                        msg: 'server went wrong',
+                        data: err1.toString()
+                    };
+                    res.end(JSON.stringify(errorData));
+                }
+                const successData = {
+                    status: '200', 
+                    msg: 'OK!',
+                    data: res2
+                };
+                res.end(JSON.stringify(successData));
+            });
+        }
+    });
+};
+exports.selectCatetory = function (req, res) {
+    const id = req.query.id;
+    Catetory.selectOne({ _id: id }, (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
+    });
+};
+exports.selectCatetories = function (req, res) {
     Catetory.selectAll({}, (err1, res1) => {
         if (err1) {
-            console.log(err1);
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
         }
-        console.log(res1);
-        res.render('catetorylist', {
-            title: '分类列表页',
-            catetories: res1
-        });
-    });
-};
-
-
-//添加电影分类，渲染空数据
-exports.new = function (req, res) {
-    //需要有默认的值（因为修改也用了此页面，所以添加的时候默认渲染为空）
-    res.render('catetory_admin', {
-        title: '后台分类录入页',
-        catetory: {}
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
     });
 };
