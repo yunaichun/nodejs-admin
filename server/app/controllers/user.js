@@ -26,25 +26,30 @@ exports.insertUser = function (req, res) {
     });
 };
 exports.importUsers = function (req, res) {
-    const userFiles = req.files.user;
-    const filePath = userFiles.path;//拿到路径（服务器缓存地址）
-    fs.readFile(filePath, (err1, res1) => {
-        const timestamp = Date.now();
-        const type = userFiles.type.split('/')[1];
-        const newPath = path.join(__dirname, '../../public/upload/', `/${timestamp}.${type}`);
-        fs.writeFile(newPath, res1, () => {
-            const obj = xlsx.parse(userFiles);
-            const excelObj = obj[0].data;
-            const newArray = [];
-            for (let i = 1; i < excelObj.length; i++) {
-                const temp = {};
-                for (let j = 0; j < excelObj[i].length; j++) {
-                    temp.name = excelObj[i][0];
-                    temp.password = excelObj[i][1];
-                }
-                newArray.push(temp);
+    const userFile = req.files.userFile;//通过name名称拿到file
+    const filePath = userFile.path;//拿到路径（服务器缓存地址）
+    const originalFilename = userFile.originalFilename;//拿到原始名称
+    if (originalFilename) {
+        const obj = xlsx.parse(filePath);
+        const excelObj = obj[0].data;
+        const newArray = [];
+        for (let i = 1; i < excelObj.length; i++) {
+            const temp = {};
+            for (let j = 0; j < excelObj[i].length; j++) {
+                temp.name = excelObj[i][0];
+                temp.password = excelObj[i][1];
             }
-            User.saveAll(newArray);
+            newArray.push(temp);
+        }
+        User.saveAll(newArray, (err1, res1) => {
+            if (err1) {
+                const errorData = {
+                    status: '500', 
+                    msg: 'server went wrong',
+                    data: err1.toString()
+                };
+                res.end(JSON.stringify(errorData));
+            }
             const successData = {
                 status: '200', 
                 msg: 'OK!',
@@ -52,7 +57,7 @@ exports.importUsers = function (req, res) {
             };
             res.end(JSON.stringify(successData));
         });
-    });
+    }
 };
 exports.deleteUser = function (req, res) {
     const id = req.params.id;
@@ -104,23 +109,31 @@ exports.updateUser = function (req, res) {
             };
             res.end(JSON.stringify(errorData));
         }
-        const updateUser = _.extend(res1, user);
-        updateUser.save((err2, res2) => {
-            if (err1) {
-                const errorData = {
-                    status: '500', 
-                    msg: 'server went wrong',
-                    data: err1.toString()
-                };
-                res.end(JSON.stringify(errorData));
-            }
-            const successData = {
-                status: '200', 
-                msg: 'OK!',
-                data: res2
+        if (!res1) {
+            const errorData = {
+                status: '201', 
+                msg: 'this user is not existed'
             };
-            res.end(JSON.stringify(successData));
-        });
+            res.end(JSON.stringify(errorData));
+        } else {
+            const updateUser = _.extend(res1, user);
+            updateUser.save((err2, res2) => {
+                if (err1) {
+                    const errorData = {
+                        status: '500', 
+                        msg: 'server went wrong',
+                        data: err1.toString()
+                    };
+                    res.end(JSON.stringify(errorData));
+                }
+                const successData = {
+                    status: '200', 
+                    msg: 'OK!',
+                    data: res2
+                };
+                res.end(JSON.stringify(successData));
+            });
+        }
     });
 };
 exports.selectUser = function (req, res) {
@@ -179,30 +192,31 @@ exports.signin = function (req, res) {
                 msg: 'the username is not exist'
             };
             res.end(JSON.stringify(resultsData));
+        } else {
+            res1.comparePassword(password, (err2, res2) => {
+                if (err2) {
+                    const error2Data = {
+                        status: '500', 
+                        msg: 'server went wrong',
+                        data: err2.toString()
+                    };
+                    res.end(JSON.stringify(error2Data));
+                }
+                if (!res2) {
+                    const results2Data = {
+                        status: '202', 
+                        msg: 'the password is not right'
+                    };
+                    res.end(JSON.stringify(results2Data));
+                }
+                req.session.user = res1;//存入session
+                const successData = {
+                    status: '200', 
+                    msg: 'OK!'
+                };
+                res.end(JSON.stringify(successData));
+            });
         }
-        res1.comparePassword(password, (err2, res2) => {
-            if (err2) {
-                const error2Data = {
-                    status: '500', 
-                    msg: 'server went wrong',
-                    data: err2.toString()
-                };
-                res.end(JSON.stringify(error2Data));
-            }
-            if (!res2) {
-                const results2Data = {
-                    status: '202', 
-                    msg: 'the password is not right'
-                };
-                res.end(JSON.stringify(results2Data));
-            }
-            req.session.user = res1;//存入session
-            const successData = {
-                status: '200', 
-                msg: 'OK!'
-            };
-            res.end(JSON.stringify(successData));
-        });
     });
 };
 exports.logout = function (req, res) {
@@ -213,13 +227,14 @@ exports.logout = function (req, res) {
             msg: 'you have already logout'
         };
         res.end(JSON.stringify(results1Data));
+    } else {
+        delete req.session.user;
+        const successData = {
+            status: '200', 
+            msg: 'OK!'
+        };
+        res.end(JSON.stringify(successData));
     }
-    delete req.session.user;
-    const successData = {
-        status: '200', 
-        msg: 'OK!'
-    };
-    res.end(JSON.stringify(successData));
 };
 exports.signup = function (req, res) {
     const user = req.query;
@@ -240,24 +255,25 @@ exports.signup = function (req, res) {
                 data: res1
             };
             res.end(JSON.stringify(error2Data));
-        } 
-        const newUser = new User(user);
-        newUser.save((err2, res2) => {
-            if (err2) {
-                const error2Data = {
-                    status: '500', 
-                    msg: 'server went wrong!',
-                    data: err2.toString()
+        } else {
+            const newUser = new User(user);
+            newUser.save((err2, res2) => {
+                if (err2) {
+                    const error2Data = {
+                        status: '500', 
+                        msg: 'server went wrong!',
+                        data: err2.toString()
+                    };
+                    res.end(JSON.stringify(error2Data));
+                }
+                const successData = {
+                    status: '200', 
+                    msg: 'OK!',
+                    data: res2
                 };
-                res.end(JSON.stringify(error2Data));
-            }
-            const successData = {
-                status: '200', 
-                msg: 'OK!',
-                data: res2
-            };
-            res.end(JSON.stringify(successData));
-        });
+                res.end(JSON.stringify(successData));
+            });
+        }
     });
 };
 exports.signinMiddleware = function (req, res, next) {

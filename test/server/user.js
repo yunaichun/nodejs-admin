@@ -77,33 +77,22 @@ describe('Test User Model Logic', () => {
 			});
 		});
 		it('import EXCEL', (done) => {
-			const files = fs.readdirSync(path.join(__dirname, '../utils/'));
-			const filterXLSXFiles = files.filter((file) => file.indexOf('用户模板表') < 0 && file.indexOf('xlsx') > -1);
-			if (filterXLSXFiles) {
-				filterXLSXFiles.forEach((file) => {
-					fs.unlinkSync(path.join(__dirname, '../utils/', file));
-				});
-			}
 			const excelPath = path.join(__dirname, '../utils/导入用户模板表.xlsx');
-			fs.readFile(excelPath, (err, res) => {
-				const timestamp = Date.now();
-				const type = 'xlsx';
-				const newPath = path.join(__dirname, '../utils/', `/${timestamp}.${type}`);
-				fs.writeFile(newPath, res, () => {
-					const obj = xlsx.parse(excelPath);
-					const excelObj = obj[0].data;
-					const newArray = [];
-					for (let i = 1; i < excelObj.length; i++) {
-						const temp = {};
-						for (let j = 0; j < excelObj[i].length; j++) {
-							temp.name = excelObj[i][0];
-							temp.password = excelObj[i][1];
-						}
-						newArray.push(temp);
-					}
-					User.saveAll(newArray, () => {});
-					done();
-				});
+			const obj = xlsx.parse(excelPath);
+			const excelObj = obj[0].data;
+			const newArray = [];
+			for (let i = 1; i < excelObj.length; i++) {
+				const temp = {};
+				for (let j = 0; j < excelObj[i].length; j++) {
+					temp.name = excelObj[i][0];
+					temp.password = excelObj[i][1];
+				}
+				newArray.push(temp);
+			}
+			User.saveAll(newArray, (err, res) => {
+				expect(err).to.be.equal(null);
+				expect(res.length).to.be.equal(3);
+				done();
 			});
 		});
 		it('export EXCEL', () => {
@@ -112,7 +101,7 @@ describe('Test User Model Logic', () => {
 				{ name: 'test02', password: 'test02' },
 				{ name: 'test03', password: 'test03' }
 			];
-			User.create(arrays);
+			User.saveAll(arrays);
 			//查询数据以EXCEL表形式导出
 			User.selectAll({}, 'name password meta.updateAt', (err, res) => {
 				const newArray = [['用户名', '密码', '更新时间']];
@@ -123,6 +112,7 @@ describe('Test User Model Logic', () => {
 					temp.push(res[i].meta.updateAt);
 					newArray.push(temp);
 				}
+				//重新遍历了一次，真是闲的，但是也没有办法！！！
 				const data = [];
 				for (let m in newArray) {
 					const arr = [];

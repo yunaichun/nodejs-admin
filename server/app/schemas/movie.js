@@ -53,9 +53,9 @@ MovieSchema.pre('save', function (next) {
  * 可以通过this获取此Model。可以对数据库操作
  */
 MovieSchema.statics = {
-	//批量保存：导入EXCEL
+	//批量保存：导入EXCEL【可以传入数组，或则对象】
 	saveAll(arrays, cb) {
-		this.model('Movie').create.apply(this, arrays, cb);
+		return this.create(arrays, cb);
 	},
 	//指定条件删除一条数据【传入空对象删除全部】
 	deleteOne(obj, cb) {

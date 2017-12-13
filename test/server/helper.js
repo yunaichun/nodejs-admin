@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 连接数据库
-mongoose.connect('mongodb://localhost:6666/OnlineMovie', err => {
+mongoose.connect('mongodb://localhost:6666/OnlineMovieTest', err => {
 	if (err) {
 		console.log('connect database error -->', err);
 		process.exit(1);
