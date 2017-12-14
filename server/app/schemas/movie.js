@@ -91,9 +91,13 @@ MovieSchema.statics = {
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于Movie.find(obj, cb)
 	},
 	//指定条件查询全部：按照更新时间排序
-	selectMoviesByTitle(seachText, conditions = {}, currentPage, pageSize, cb) {
+	selectMoviesByTitle(seachText, catetoryId, conditions = {}, currentPage, pageSize, cb) {
+		const searchCon = { title: new RegExp(`${seachText}.*`, 'i') };
+		if (catetoryId) {
+			searchCon.catetory = catetoryId;
+		}
 		return this
-			.find({ title: new RegExp(`${seachText}.*`, 'i') }, conditions)
+			.find(searchCon, conditions)
 			.populate({ 
 				path: 'movies',
 				// select:'title poster', 

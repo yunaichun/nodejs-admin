@@ -75,9 +75,13 @@ CatetorySchema.statics = {
 			.exec(cb);//执行查询后，将调用回调cb函数。相当于Catetory.find(obj, cb)
 	},
 	//指定条件查询全部：按照更新时间排序
-	selectMoviesByCatetory(obj, conditions = {}, currentPage, pageSize, cb) {
+	selectMoviesByCatetory(catetoryId, conditions = {}, currentPage, pageSize, cb) {
+		const searchCon = {};
+		if (catetoryId) {
+			searchCon.catetory = catetoryId;
+		}
 		return this
-			.find(obj, conditions)
+			.find(searchCon, conditions)
 			.populate({ 
 				path: 'movies',
 				// select:'title poster', 

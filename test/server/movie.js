@@ -235,7 +235,7 @@ describe('Test Movie Model Logic', () => {
 						//将5个电影存入分类中
 						res.save((err4, res4) => {
 							//通过分类查找5个电影
-							Movie.selectMoviesByTitle('金刚狼', {}, 1, 5, (err5, res5) => {
+							Movie.selectMoviesByTitle('金刚狼', res._id, {}, 1, 5, (err5, res5) => {
 								done();
 							});
 						});

@@ -1,5 +1,6 @@
 const User = require('../app/controllers/user');
 const Catetory = require('../app/controllers/catetory');
+const Movie = require('../app/controllers/movie');
 const multipart = require('connect-multiparty');
 const express = require('express');
 
@@ -24,5 +25,14 @@ router.get('/deleteCatetories', Catetory.deleteCatetories);
 router.get('/updateCatetory', Catetory.updateCatetory);
 router.get('/selectCatetory', Catetory.selectCatetory);
 router.get('/selectCatetories', User.signinMiddleware, Catetory.selectCatetories);
+
+/*电影详情管理模块*/
+router.get('/insertMovie', Movie.uploadImageMiddleware, Movie.insertMovie);
+router.get('/deleteMovie/:id', Movie.deleteMovie);
+router.get('/deleteMovies', Movie.deleteMovies);
+router.get('/updateMovie', Movie.uploadImageMiddleware, Movie.updateMovie);
+router.get('/selectMovie', Movie.selectMovie);
+router.get('/selectMoviesByCatetory', User.signinMiddleware, Movie.selectMoviesByCatetory);
+router.get('/selectMoviesByTitle', User.signinMiddleware, Movie.selectMoviesByTitle);
 
 module.exports = router;

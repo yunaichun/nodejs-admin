@@ -167,7 +167,7 @@ describe('Test Catetory Model Logic', () => {
 						//将5个电影存入分类中
 						res.save((err4, res4) => {
 							//通过分类查找5个电影
-							Catetory.selectMoviesByCatetory({}, {}, 1, 5, (err5, res5) => {
+							Catetory.selectMoviesByCatetory(res._id, {}, 1, 5, (err5, res5) => {
 								done();
 							});
 						});
