@@ -2,7 +2,6 @@
   "verbose": true,
   "ignore": [
     "node_modules/*",
-    "*/public/*",
     "test/*"
   ]
 }
