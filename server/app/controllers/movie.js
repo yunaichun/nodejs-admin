@@ -6,12 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 exports.insertMovie = function (req, res) {
-    //req.body请求体;req.query查询参数;req.params动态路由
-    const movie = req.query;
+    //req.body请求体(post请求);req.query查询参数(get请求);req.params动态路由
+    const movie = req.body;
     if (req.poster) { 
         movie.poster = req.poster;//中间件【假如有图片是文件上传的话】
     }
-    console.log(movie);
     const newMovie = new Movie(movie);
     newMovie.save((err1, res1) => {
         if (err1) {
@@ -216,7 +215,7 @@ exports.selectMovie = function (req, res) {
 };
 //电影分页查询【所有分类+指定分类】
 exports.selectMoviesByCatetory = function (req, res) {
-    const catetoryId = req.query.id;
+    const catetoryId = req.query.catetoryId;
     const currentPage = req.query.currentPage || 1;
     const pageSize = req.query.pageSize || 5;
     Catetory.selectMoviesByCatetory(catetoryId, {}, currentPage, pageSize, (err1, res1) => {
@@ -260,15 +259,14 @@ exports.selectMoviesByTitle = function (req, res) {
     });
 };
 exports.uploadImageMiddleware = function (req, res, next) {
-    const uploadFile = req.files.uploadFile;
-    const filePath = uploadFile.filepath;
-    const originalFilename = uploadFile.originalFilename;
-    if (originalFilename) {
+    const uploadImage = req.files.uploadImage;
+    if (uploadImage) {
+        const filePath = uploadImage.path;
         fs.readFile(filePath, (err1, res1) => {
             const timestamp = Date.now();
-            const type = uploadFile.type.split('/')[1];
+            const type = uploadImage.type.split('/')[1];
             const poster = `${timestamp}.${type}`;
-            const newPath = path.join(__dirname, '../../', `/upload/${poster}`);
+            const newPath = path.join(__dirname, '../../', `/public/upload/${poster}`);
             fs.writeFile(newPath, res1, (err2, res2) => {
                 req.poster = poster;
                 next();

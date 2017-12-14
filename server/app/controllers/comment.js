@@ -163,8 +163,8 @@ exports.selectComment = function (req, res) {
     });
 };
 exports.selectComments = function (req, res) {
-    const id = req.query.id;
-    Comment.selectAll({ movie: id }, (err1, res1) => {
+    const movieId = req.query.movieId;
+    Comment.selectAll({ movie: movieId }, (err1, res1) => {
         if (err1) {
             const errorData = {
                 status: '500', 

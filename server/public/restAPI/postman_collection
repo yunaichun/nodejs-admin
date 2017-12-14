@@ -1,0 +1,892 @@
+{
+	"variables": [],
+	"info": {
+		"name": "电影网站",
+		"_postman_id": "454f771b-765e-29dd-36b2-6e7dc50de347",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "用户注册",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/signup?name=test1000&password=test1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"signup"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test1000",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "password",
+							"value": "test1000",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户登陆",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/signin?name=test&password=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"signin"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户退出",
+			"request": {
+				"url": "http://localhost:3000/logout",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户添加",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/insertUser?name=test&password=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"insertUser"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户导入",
+			"request": {
+				"url": "http://localhost:3000/importUsers",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "uploadFile",
+							"description": "",
+							"type": "file",
+							"src": "导入用户模板表.xlsx"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户导出",
+			"request": {
+				"url": "http://localhost:3000/exportUsers",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户单个删除",
+			"request": {
+				"url": "http://localhost:3000/deleteUser/5a323396aaa54e19a3d5b671",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户批量删除",
+			"request": {
+				"url": "http://localhost:3000/deleteUsers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ids",
+							"value": "5a3291623806d63c780f33c2",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "ids",
+							"value": "5a3291623806d63c780f33c3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户修改",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/updateUser?id=5a323396aaa54e19a3d5b671&name=test1000&password=test1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateUser"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a323396aaa54e19a3d5b671",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "name",
+							"value": "test1000",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "password",
+							"value": "test1000",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户指定查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/selectUser?id=5a30b78d2ad95e7548283f41",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"selectUser"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a30b78d2ad95e7548283f41",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "用户所有查询",
+			"request": {
+				"url": "http://localhost:3000/selectUsers",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类添加",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/insertCatetory?name=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"insertCatetory"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类单个删除",
+			"request": {
+				"url": "http://localhost:3000/deleteCatetory/5a325ce6076889250a3066fb",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类批量删除",
+			"request": {
+				"url": "http://localhost:3000/deleteCatetories",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ids",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类修改",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/updateCatetory?id=5a325ce6076889250a3066fb&name=tt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateCatetory"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a325ce6076889250a3066fb",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "name",
+							"value": "tt",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类指定查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/updateCatetory?id=5a325ce6076889250a3066fb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateCatetory"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a325ce6076889250a3066fb",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "分类所有查询",
+			"request": {
+				"url": "http://localhost:3000/selectCatetories",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影添加",
+			"request": {
+				"url": "http://localhost:3000/insertMovie",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "电影标题",
+							"description": ""
+						},
+						{
+							"key": "doctor",
+							"value": "电影导演",
+							"description": ""
+						},
+						{
+							"key": "language",
+							"value": "语言",
+							"description": ""
+						},
+						{
+							"key": "country",
+							"value": "国家",
+							"description": ""
+						},
+						{
+							"key": "summary",
+							"value": "简介",
+							"description": ""
+						},
+						{
+							"key": "flash",
+							"value": "视频地址",
+							"description": ""
+						},
+						{
+							"key": "poster",
+							"value": "海报地址",
+							"description": ""
+						},
+						{
+							"key": "year",
+							"value": "2017",
+							"description": ""
+						},
+						{
+							"key": "catetoryName",
+							"value": "新增的",
+							"description": "新增没有的分类名称"
+						},
+						{
+							"key": "uploadImage",
+							"value": "",
+							"description": "",
+							"type": "file"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影单个删除",
+			"request": {
+				"url": "http://localhost:3000/deleteMovie/1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影批量删除",
+			"request": {
+				"url": "http://localhost:3000/deleteMovies",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ids",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影修改",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/updateMovie?id=5a325ce6076889250a3066fb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"updateMovie"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a325ce6076889250a3066fb",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影详情查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/selectMovie?id=5a3212249818ad0fe20c6c08",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"selectMovie"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5a3212249818ad0fe20c6c08",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影标题模糊查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/selectMoviesByTitle?title=&catetoryId=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"selectMoviesByTitle"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "",
+							"equals": false,
+							"description": "电影标题名称"
+						},
+						{
+							"key": "catetoryId",
+							"value": "",
+							"equals": false,
+							"description": "电影分类id"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "title",
+						"value": "",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "电影按照分类查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/selectMoviesByCatetory?catetoryId=5a32127b9818ad0fe20c6c0a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"selectMoviesByCatetory"
+					],
+					"query": [
+						{
+							"key": "catetoryId",
+							"value": "5a32127b9818ad0fe20c6c0a",
+							"equals": true,
+							"description": "电影分类Id"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论添加",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/insertComment?movie=&from=&content=&commentId=&fromId=&toId=&content=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"insertComment"
+					],
+					"query": [
+						{
+							"key": "movie",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "from",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "content",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "commentId",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "fromId",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "toId",
+							"value": "",
+							"equals": false,
+							"description": ""
+						},
+						{
+							"key": "content",
+							"value": "",
+							"equals": false,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论单个删除",
+			"request": {
+				"url": "http://localhost:3000/deleteComment/1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论批量删除",
+			"request": {
+				"url": "http://localhost:3000/deleteComments",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ids",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论修改",
+			"request": {
+				"url": "http://localhost:3000/updateComment",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论单个查询",
+			"request": {
+				"url": "http://localhost:3000/selectComment",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "评论所有查询",
+			"request": {
+				"url": {
+					"raw": "http://localhost:3000/selectComments?movieId=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"selectComments"
+					],
+					"query": [
+						{
+							"key": "movieId",
+							"value": "",
+							"equals": false,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

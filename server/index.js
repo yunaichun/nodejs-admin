@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
+const path = require('path');
 const routers = require('./app/routers/routers');
 
 const port = process.env.PORT || 3000;
@@ -37,9 +38,10 @@ app.use(session({
 		url: 'mongodb://localhost:6666/OnlineMovie'
 	})
 }));
-app.use(bodyParser.urlencoded({ extended: true }));//处理不同类型请求体+处理不同编码+处理不同压缩类型【解析form表单】
+app.use(bodyParser.urlencoded({ extended: true }));//post方法提交表单：处理不同类型请求体+处理不同编码+处理不同压缩类型【解析form表单】
+app.use(express.static(path.join(__dirname, '/public/upload/')));//静态资源目录
 
 /*引入路由*/
-app.use('/', routers);
+app.use(routers);
 app.listen(port);
 console.log(`server started on port ${port}`);

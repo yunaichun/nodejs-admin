@@ -10,9 +10,10 @@ const multipartMiddleware = multipart();//指定模块使用，因为会在服�
 
 /*用户管理模块*/
 router.get('/insertUser', User.insertUser);
-router.get('/importUsers', multipartMiddleware, User.insertUser);
+router.post('/importUsers', multipartMiddleware, User.importUsers);
+router.get('/exportUsers', User.exportUsers);
 router.get('/deleteUser/:id', User.deleteUser);
-router.get('/deleteUsers', User.deleteUsers);
+router.post('/deleteUsers', User.deleteUsers);
 router.get('/updateUser', User.updateUser);
 router.get('/selectUser', User.selectUser);
 router.get('/selectUsers', User.signinMiddleware, User.selectUsers);
@@ -29,10 +30,10 @@ router.get('/selectCatetory', Catetory.selectCatetory);
 router.get('/selectCatetories', User.signinMiddleware, Catetory.selectCatetories);
 
 /*电影详情管理模块*/
-router.get('/insertMovie', Movie.uploadImageMiddleware, Movie.insertMovie);
+router.post('/insertMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.insertMovie);
 router.get('/deleteMovie/:id', Movie.deleteMovie);
 router.get('/deleteMovies', Movie.deleteMovies);
-router.get('/updateMovie', Movie.uploadImageMiddleware, Movie.updateMovie);
+router.get('/updateMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.updateMovie);
 router.get('/selectMovie', Movie.selectMovie);
 router.get('/selectMoviesByCatetory', User.signinMiddleware, Movie.selectMoviesByCatetory);
 router.get('/selectMoviesByTitle', User.signinMiddleware, Movie.selectMoviesByTitle);

@@ -1,7 +1,6 @@
 .DS_Store
 /node_modules/
-/test/utils/*.jpeg
-/test/utils/*.jpg
-/test/utils/*.xlsx
+/server/public/upload/
+/test/utils/
+/test/utils/!*.js
 yarn-error.log
-/**/public/libs/

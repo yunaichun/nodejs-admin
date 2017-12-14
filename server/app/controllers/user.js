@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const xlsx = require('node-xlsx');
 const _ = require('underscore');
+const fs = require('fs');
+const path = require('path');
 
 exports.insertUser = function (req, res) {
     //req.body请求体;req.query查询参数;req.params动态路由
@@ -24,10 +26,9 @@ exports.insertUser = function (req, res) {
     });
 };
 exports.importUsers = function (req, res) {
-    const userFile = req.files.userFile;//通过name名称拿到file
-    const filePath = userFile.path;//拿到路径（服务器缓存地址）
-    const originalFilename = userFile.originalFilename;//拿到原始名称
-    if (originalFilename) {
+    const uploadFile = req.files.uploadFile;//通过name名称拿到file
+    if (uploadFile) {
+        const filePath = uploadFile.path;//拿到路径（服务器缓存地址）
         const obj = xlsx.parse(filePath);
         const excelObj = obj[0].data;
         const newArray = [];
@@ -57,6 +58,47 @@ exports.importUsers = function (req, res) {
         });
     }
 };
+exports.exportUsers = function (req, res) {
+    User.selectAll({}, 'name password meta.updateAt', (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong!',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        const newArray = [['用户名', '密码', '更新时间']];
+        for (let i = 0; i < res1.length; i++) {
+            const temp = [];
+            temp.push(res1[i].name);
+            temp.push(res1[i].password);
+            temp.push(res1[i].meta.updateAt);
+            newArray.push(temp);
+        }
+        console.log(newArray);
+        //重新遍历了一次，真是闲的，但是也没有办法！！！
+        const data = [];
+        for (let m in newArray) {
+            const arr = [];
+            const value = newArray[m];
+            for (let n in value) {
+                arr.push(value[n]);
+            }
+            data.push(arr);
+        }
+        console.log(newArray === data);//两者的值是不同的
+        const buffer = xlsx.build([
+            {
+                name: 'sheet1',
+                data
+            }        
+        ]);
+        const flePath = path.join(__dirname, '../../public/', '/upload/导出用户模板表.xlsx');
+        fs.writeFileSync(flePath, buffer, { flag: 'w' });
+        res.download(flePath); 
+    });
+};
 exports.deleteUser = function (req, res) {
     const id = req.params.id;
     User.deleteOne({ _id: id }, (err1, res1) => {
@@ -78,6 +120,7 @@ exports.deleteUser = function (req, res) {
 };
 exports.deleteUsers = function (req, res) {
     const ids = req.body.ids;//获取数组
+    console.log('传递数据：', req.body);
     User.deleteAllByIds(ids, (err1, res1) => {
         if (err1) {
             const errorData = {
