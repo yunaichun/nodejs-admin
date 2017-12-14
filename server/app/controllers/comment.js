@@ -4,8 +4,8 @@ const _ = require('underscore');
 exports.insertComment = function (req, res) {
     //req.body请求体;req.query查询参数;req.params动态路由
     const comment = req.query;
-    if (comment.cid) { //有主评论
-        Comment.selectOne({ movie: comment.cid }, (err1, res1) => {
+    if (comment.commentId) { //有主评论
+        Comment.selectOne({ _id: comment.commentId }, (err1, res1) => {
             if (err1) {
                 const errorData = {
                     status: '500', 
@@ -22,11 +22,12 @@ exports.insertComment = function (req, res) {
                 res.end(JSON.stringify(resultsData));
             } else {
                 const reply = {
-                    from: comment.from,
-                    to: comment.tid,
+                    from: comment.fromId,
+                    to: comment.toId,
                     content: comment.content
                 };
                 res1.reply.push(reply);
+                console.log('111111111', res1);
                 res1.save((err2, res2) => {
                     if (err1) {
                         const errorData = {

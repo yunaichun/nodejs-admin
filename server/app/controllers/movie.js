@@ -11,6 +11,7 @@ exports.insertMovie = function (req, res) {
     if (req.poster) { 
         movie.poster = req.poster;//中间件【假如有图片是文件上传的话】
     }
+    console.log(movie);
     const newMovie = new Movie(movie);
     newMovie.save((err1, res1) => {
         if (err1) {
@@ -216,8 +217,8 @@ exports.selectMovie = function (req, res) {
 //电影分页查询【所有分类+指定分类】
 exports.selectMoviesByCatetory = function (req, res) {
     const catetoryId = req.query.id;
-    const currentPage = req.query.currentPage;
-    const pageSize = req.query.pageSize;
+    const currentPage = req.query.currentPage || 1;
+    const pageSize = req.query.pageSize || 5;
     Catetory.selectMoviesByCatetory(catetoryId, {}, currentPage, pageSize, (err1, res1) => {
         if (err1) {
             const errorData = {
@@ -237,10 +238,10 @@ exports.selectMoviesByCatetory = function (req, res) {
 };
 //标题模糊查询【所有分类+指定分类】
 exports.selectMoviesByTitle = function (req, res) {
-    const catetoryId = req.query.catetoryId;
     const title = req.query.title;
-    const currentPage = req.query.currentPage;
-    const pageSize = req.query.pageSize;
+    const catetoryId = req.query.catetoryId;
+    const currentPage = req.query.currentPage || 1;
+    const pageSize = req.query.pageSize || 5;
     Movie.selectMoviesByTitle(title, catetoryId, {}, currentPage, pageSize, (err1, res1) => {
         if (err1) {
             const errorData = {

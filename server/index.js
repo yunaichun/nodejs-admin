@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
-const routers = require('./routers/routers');
+const routers = require('./app/routers/routers');
 
 const port = process.env.PORT || 3000;
 const app = express();

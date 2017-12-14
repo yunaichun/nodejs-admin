@@ -78,8 +78,9 @@ CatetorySchema.statics = {
 	selectMoviesByCatetory(catetoryId, conditions = {}, currentPage, pageSize, cb) {
 		const searchCon = {};
 		if (catetoryId) {
-			searchCon.catetory = catetoryId;
+			searchCon._id = catetoryId;
 		}
+		console.log(searchCon);
 		return this
 			.find(searchCon, conditions)
 			.populate({ 

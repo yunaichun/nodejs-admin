@@ -1,7 +1,7 @@
-const User = require('../app/controllers/user');
-const Catetory = require('../app/controllers/catetory');
-const Movie = require('../app/controllers/movie');
-const Comment = require('../app/controllers/comment');
+const User = require('../controllers/user');
+const Catetory = require('../controllers/catetory');
+const Movie = require('../controllers/movie');
+const Comment = require('../controllers/comment');
 const multipart = require('connect-multiparty');
 const express = require('express');
 
