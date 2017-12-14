@@ -1,6 +1,7 @@
 const User = require('../app/controllers/user');
 const Catetory = require('../app/controllers/catetory');
 const Movie = require('../app/controllers/movie');
+const Comment = require('../app/controllers/comment');
 const multipart = require('connect-multiparty');
 const express = require('express');
 
@@ -18,8 +19,9 @@ router.get('/selectUsers', User.signinMiddleware, User.selectUsers);
 router.get('/signin', User.signin);
 router.get('/signup', User.signup);
 router.get('/logout', User.logout);
+
 /*电影分类管理模块*/
-router.get('/insertUser', Catetory.insertCatetory);
+router.get('/insertCatetory', Catetory.insertCatetory);
 router.get('/deleteCatetory/:id', Catetory.deleteCatetory);
 router.get('/deleteCatetories', Catetory.deleteCatetories);
 router.get('/updateCatetory', Catetory.updateCatetory);
@@ -34,5 +36,13 @@ router.get('/updateMovie', Movie.uploadImageMiddleware, Movie.updateMovie);
 router.get('/selectMovie', Movie.selectMovie);
 router.get('/selectMoviesByCatetory', User.signinMiddleware, Movie.selectMoviesByCatetory);
 router.get('/selectMoviesByTitle', User.signinMiddleware, Movie.selectMoviesByTitle);
+
+/*电影评论管理模块*/
+router.get('/insertComment', Comment.insertComment);
+router.get('/deleteComment/:id', Comment.deleteComment);
+router.get('/deleteComments', Comment.deleteComments);
+router.get('/updateComment', Comment.updateComment);
+router.get('/selectComment', Comment.selectComment);
+router.get('/selectComments', Comment.selectComments);
 
 module.exports = router;
