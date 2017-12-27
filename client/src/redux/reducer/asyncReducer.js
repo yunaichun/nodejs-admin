@@ -5,10 +5,16 @@
  */
 export default (state = null, action) => {
 	switch (action.type) {
-		case 'selectUsersAction':
-			return state;
-		case 'insertUserAction':
-			return state;
+		case 'GET_DATA' : 
+			return action.oldState;
+		case 'reduxThunkAction':
+			return action.successState;
+		case 'GET_DATA_FAILED' : 
+			return action.errorState;
+
+
+		case 'reduxPromiseAction':
+			return action.successState;
 		default: 
 			return state;
 	}
