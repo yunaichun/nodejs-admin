@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080',	
+		'webpack-dev-server/client?http://localhost:4000',	
 		'webpack/hot/only-dev-server',	//模块热替换，配置react-hot-loader插件
 		'./client/src/index.js'
 	],

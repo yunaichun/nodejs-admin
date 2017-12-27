@@ -6,7 +6,7 @@ const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 const path = require('path');
-const routers = require('./app/routers/routers');
+const routers = require('./src/routers/routers');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -34,7 +34,7 @@ app.use(session({
 	secret: 'OnlineMovie', //防止篡改cookie值[签名，与上文中cookie设置的签名字符串一致，]
 	resave: false, //don't save session if unmodified【不想每次刷新页面就创建session】
 	saveUninitialized: true, //don't create session until something stored【不想每次刷新页面就创建session】
-	cookie: { maxAge: 1 * 60 * 1000 },
+	cookie: { maxAge: 60 * 60 * 1000 },
 	store: new mongoStore({ //session持久化
 		url: 'mongodb://localhost:6666/OnlineMovie'
 	})

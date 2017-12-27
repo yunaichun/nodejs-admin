@@ -8,6 +8,18 @@ const express = require('express');
 const router = express.Router();
 const multipartMiddleware = multipart();//指定模块使用，因为会在服务器存储临时文件，用完别忘了删除
 
+/*设置跨域*/
+router.all('*', (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4000'); //设置Credentials，就不能设置*。【携带session】
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With');
+    res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('X-Powered-By', ' 3.2.1');
+    if (req.method === 'OPTIONS') {
+		res.send(200);/*让options请求快速返回*/
+    }
+    next();
+});
 /*用户管理模块*/
 router.get('/insertUser', User.insertUser);
 router.post('/importUsers', multipartMiddleware, User.importUsers);
