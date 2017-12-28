@@ -11,10 +11,6 @@ export default (state = null, action) => {
 			return action.successState;
 		case 'GET_DATA_FAILED' : 
 			return action.errorState;
-
-
-		case 'reduxPromiseAction':
-			return action.successState;
 		default: 
 			return state;
 	}

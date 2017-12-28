@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionCreators from '../redux/actions/index';
+import * as actionCreators from '../../redux/actions/index';
 
 class reduxThunkAction extends Component {
-	constructor(props) {
-		super(props);
-	}
 	componentDidMount() {
 		console.log('this.props值为:', this.props);
 		this.props.reduxThunkAction().then(() => {
-			console.log('异步返回redux数据', this.props.asyncData);
+			//异步获取redux store数据：获取的是reducer
+			console.log('异步获取redux store数据:', this.props.reduxThunkReducer);
 		});
 	}
 	render() {
