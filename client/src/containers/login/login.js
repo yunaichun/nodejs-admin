@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { connect } from 'react-redux';
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+
+import * as actionCreators from '../../redux/actions/index';
 import '../../style/login/login.less';
 
 const FormItem = Form.Item;
@@ -14,6 +17,16 @@ class Login extends React.Component {
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
 				console.log('Received values of form: ', values);
+				this.props.login(values.userName, values.password).then(data => {
+					//异步获取redux store数据：返回的是提交的action
+					console.log('异步获取redux store数据:', data);
+					if (data.payload.status === 200) {
+						message.success(data.payload.msg, 2);
+						this.props.history.push('/home');
+					} else {
+						message.error(data.payload.msg, 2);
+					}
+				});
 			}
 		});
 	}
@@ -55,4 +68,14 @@ class Login extends React.Component {
 
 const LoginForm = Form.create()(Login);
 
-export default LoginForm;
+function mapStateToProps(state, ownProps) {
+	console.log('mapStateToProps的sate值:', state);
+	console.log('mapStateToProps的ownProps值:', ownProps);
+	return state;
+}
+
+export default connect(
+	mapStateToProps,
+	actionCreators
+)(LoginForm);
+

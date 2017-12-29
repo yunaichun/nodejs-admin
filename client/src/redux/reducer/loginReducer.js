@@ -5,10 +5,8 @@
  */
 export default (state = null, action) => {
 	switch (action.type) {
-		case 'selectUsersAction':
-			return state;
-		case 'insertUserAction':
-			return state;
+		case 'login':
+			return action.payload;
 		default: 
 			return state;
 	}
