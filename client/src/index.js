@@ -13,6 +13,9 @@ import { createLogger } from 'redux-logger';
 import rootReducer from './redux/reducer/index';//reducer
 import RouterConfig from './router/index';//router
 
+// 引入antd样式
+import 'antd/dist/antd.css';
+
 const loggerMiddleware = createLogger();
 const store = createStore(
     rootReducer,

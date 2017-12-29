@@ -4,6 +4,7 @@
   "description": "movie",
   "main": "app.js",
   "dependencies": {
+    "antd": "^3.0.3",
     "autoprefixer": "^7.2.3",
     "axios": "^0.17.1",
     "bcryptjs": "^2.3.0",
