@@ -52,7 +52,7 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<Bcrumb title="当前天气" icon="line-chart" />
+				<Bcrumb title="当前天气" icon="cloud" />
 				<div id="main">
 					<div id="weather">
 						<h2>

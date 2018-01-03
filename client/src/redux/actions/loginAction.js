@@ -1,4 +1,4 @@
-import { signin } from '../../api/api';
+import { signin, logout } from '../../api/api';
 /**
  * [userAction 调用reducer]
  * 它们的作用是封装动作对象的内部结构，以便其余的代码库不需要关心它。
@@ -13,12 +13,12 @@ const login = (name, password) => {
 	};
 };
 // 异步action：返回Promise
-const logout = () => {
-	const request = signin({ name: 'test', password: 'test' });
+const signout = () => {
+	const request = logout();
 	return {
-		type: 'logout',
+		type: 'signout',
 		payload: request
 	};
 };
-export { login, logout };
+export { login, signout };
 
