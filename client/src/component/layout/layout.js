@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Layout, Menu, Icon, message } from 'antd';
+import { Layout, Menu, message } from 'antd';
 import '../../style/layout/layout.less';
 import * as actionCreators from '../../redux/actions/index';
+import LinkMenu from './linkmenu';
+import PanelHeader from './panelHeader';
 
-const { Header, Content, Footer, Sider } = Layout;
-const SubMenu = Menu.SubMenu;
+const { Content, Footer } = Layout;
 
 class LayOut extends React.Component {
 	constructor(props) {
@@ -39,42 +39,9 @@ class LayOut extends React.Component {
 	render() {
 		return (
 			<Layout style={{ minHeight: '100vh' }}>
-				<Sider
-					collapsible
-					collapsed={this.state.collapsed}
-					onCollapse={this.onCollapse}
-				>
-					<div className="logo" />
-					<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-						<Menu.Item key="1">
-							<Link to="/home">
-								<Icon type="pie-chart" />
-								<span>首页</span>
-							</Link>
-						</Menu.Item>
-						<SubMenu
-							key="sub1"
-							title={<span><Icon type="user" /><span>User</span></span>}
-						>
-							<Menu.Item key="3">Tom</Menu.Item>
-							<Menu.Item key="4">Bill</Menu.Item>
-							<Menu.Item key="5">Alex</Menu.Item>
-						</SubMenu>
-					</Menu>
-				</Sider>
+				<LinkMenu collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
 				<Layout>
-					<Header style={{ background: '#fff', padding: 0 }}>
-						<Icon
-							className="trigger"
-							type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-							onClick={this.onCollapse}
-						/>
-						<Menu mode="horizontal" onClick={this.logout} className="layout-header-menu">
-							<SubMenu title={<span><Icon type="user" />sosout</span>}>
-								<Menu.Item key="logout">注销</Menu.Item>
-							</SubMenu>
-						</Menu>
-					</Header>
+					<PanelHeader collapsed={this.state.collapsed} onCollapse={this.onCollapse} logout={this.logout} />
 					<Content className="layout-content">
 						{this.props.children}
 					</Content>
