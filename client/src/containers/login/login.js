@@ -20,7 +20,7 @@ class Login extends React.Component {
 				this.props.login(values.userName, values.password).then(data => {
 					//异步获取redux store数据：返回的是提交的action
 					console.log('异步获取redux store数据:', data);
-					if (data.payload.status === 200) {
+					if (data.payload.status === '200') {
 						message.success(data.payload.msg, 2);
 						this.props.history.push('/home');
 					} else {

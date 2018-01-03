@@ -1,0 +1,17 @@
+{
+  "name": "nodejs",
+  "description": "movie",
+  "main": "app.js",
+  "authors": [
+    "ncyu"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/ncyu1044173619/Nodejs-OnlineMovie",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

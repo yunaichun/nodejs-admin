@@ -65,6 +65,10 @@ module.exports = {
 		port: 4000
 	},
 	plugins: [	
-		new webpack.HotModuleReplacementPlugin() //模块热替换插件
+		new webpack.HotModuleReplacementPlugin(), //模块热替换插件
+		new webpack.ProvidePlugin({
+			jQuery: "jquery",
+			$: "jquery"
+		})
 	]	
 };

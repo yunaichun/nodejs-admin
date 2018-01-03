@@ -23,8 +23,8 @@ class LayOut extends React.Component {
 		});
 	}
 	logout() {
-		alert(1);
-		this.props.history.push('/');
+		console.log(this.props);
+		this.props.history.push('/login');
 	}
 	render() {
 		return (
@@ -37,9 +37,9 @@ class LayOut extends React.Component {
 					<div className="logo" />
 					<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
 					<Menu.Item key="1">
-						<Link to="/">
+						<Link to="/home">
 							<Icon type="pie-chart" />
-							<span>Option 1</span>
+							<span>首页</span>
 						</Link>
 					</Menu.Item>
 					<Menu.Item key="2">
@@ -80,14 +80,8 @@ class LayOut extends React.Component {
 							</SubMenu>
 						</Menu>
 					</Header>
-					<Content style={{ margin: '0 16px' }}>
-					<Breadcrumb style={{ margin: '16px 0' }}>
-						<Breadcrumb.Item>User</Breadcrumb.Item>
-						<Breadcrumb.Item>Bill</Breadcrumb.Item>
-					</Breadcrumb>
-					<div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-						Bill is a cat.
-					</div>
+					<Content className="layout-content">
+						{this.props.children}
 					</Content>
 					<Footer style={{ textAlign: 'center' }}>
 						Ant Design ©2016 Created by Ant UED
