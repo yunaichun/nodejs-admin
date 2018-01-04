@@ -18,7 +18,7 @@ module.exports = {
 			//jsx+ES6语法解析
 			{
 				test: /\.jsx?$/,
-				exclude: /node_modules/,
+				exclude: /(node_modules|bower_components)/,
 				loaders: ['react-hot-loader/webpack', 'babel-loader']
 			},
 			// CSS、LESS、SCSS文件加载，浏览器兼容CSS自动补全
@@ -28,9 +28,9 @@ module.exports = {
 				use: [
 					{ loader: 'style-loader' },
 					// { loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' },
-					{ loader: 'css-loader' },
+					{ loader: 'css-loader', },
 					// { loader: 'less-loader' },
-					// { loader: 'sass-loader' },
+					{ loader: 'sass-loader' },
 					{
 						loader: 'postcss-loader',
 						options: {
@@ -51,7 +51,7 @@ module.exports = {
 				],
 				include: [
 					path.resolve(__dirname, 'node_modules/antd/dist/'), // 非常关键
-					path.resolve(__dirname, 'client/src')  // 还需要把你项目里的css，less所在的文件夹内敛
+					path.resolve(__dirname, 'client/src/style/')  // 还需要把你项目里的css，less所在的文件夹内敛
 				]
 			}
 		]
@@ -67,8 +67,8 @@ module.exports = {
 	plugins: [	
 		new webpack.HotModuleReplacementPlugin(), //模块热替换插件
 		new webpack.ProvidePlugin({
-			jQuery: "jquery",
-			$: "jquery"
+			jQuery: 'jquery',
+			$: 'jquery'
 		})
 	]	
 };

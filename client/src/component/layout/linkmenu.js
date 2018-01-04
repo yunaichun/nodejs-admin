@@ -12,7 +12,10 @@ function LinkMenu(props) {
 			collapsed={props.collapsed}
 			onCollapse={props.onCollapse}
 		>
-			<div className="logo" />
+			<div className="logo">
+				<img alt="logo" src="http://cdn.taofangdd.com/FvJSSx8lTrnGLyoS64a7NPUSKz0i" />
+				<span>AntD Admin</span>
+			</div>
 			<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
 				<Menu.Item key="1">
 					<Link to="/home">
