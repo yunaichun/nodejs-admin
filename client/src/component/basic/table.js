@@ -1,6 +1,7 @@
 import React from 'react';
-import { Table, Button } from 'antd';
+import { Form, Table, Button } from 'antd';
 import { Bcrumb } from '../../component/bcrumb/bcrumb';// 公共面包屑
+import { SearchFilter } from './searchFilter';// 公共面包屑
 
 const columns = [
 	{
@@ -67,6 +68,7 @@ class TableList extends React.Component {
 			onChange: this.onSelectChange,
 		};
 		const hasSelected = selectedRowKeys.length > 0;
+		//设置分页
 		const pagination = {
 			defaultCurrent: 1, //当前选中页
 			// total: 50, //总数
@@ -74,10 +76,12 @@ class TableList extends React.Component {
 			showSizeChanger: true, //是否可以改变pageSize
 			showTotal: total => `共 ${total} 条`//显示总条数
 		};
-		
+		//传递form属性
+		const form = this.props.form;
 		return (
 			<div>
 				<Bcrumb title="当前天气" icon="cloud" />
+				<SearchFilter form={form} />
 				<div style={{ marginBottom: 16 }}>
 					<Button
 						type="primary"
@@ -102,4 +106,4 @@ class TableList extends React.Component {
 	}
 }
 
-export default TableList;
+export default Form.create()(TableList);

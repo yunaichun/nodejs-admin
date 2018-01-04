@@ -28,5 +28,3 @@ export class Bcrumb extends React.Component {
 		);
 	}
 }
-
-export default Bcrumb;
