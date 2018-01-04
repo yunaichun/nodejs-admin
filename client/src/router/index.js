@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 /*Redux异步Action测试*/
-import reduxThunkAction from '../containers/examples/reduxThunkAction';
-import reduxPromiseAction1 from '../containers/examples/reduxPromiseAction1';
-import reduxPromiseAction2 from '../containers/examples/reduxPromiseAction2';
+import reduxThunkAction from '../component/asyncAction/reduxThunkAction';
+import reduxPromiseAction1 from '../component/asyncAction/reduxPromiseAction1';
+import reduxPromiseAction2 from '../component/asyncAction/reduxPromiseAction2';
+import Table from '../component/basic/table';
 /*前端页面组件*/
 import Layout from '../component/layout/layout';
 import Home from '../containers/home/home';
@@ -19,6 +20,7 @@ const RouterConfig = () => (
 			<Layout>
 				<Switch>
 					<Route exact path="/home" component={Home} />
+					<Route exact path="/list" component={Table} />
 					<Route exact path="/reduxThunkAction" component={reduxThunkAction} />
 					<Route exact path="/reduxPromiseAction1" component={reduxPromiseAction1} />
 					<Route exact path="/reduxPromiseAction2" component={reduxPromiseAction2} />
