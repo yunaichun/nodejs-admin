@@ -1,7 +1,5 @@
 import React from 'react';
-import { Form, Table, Button } from 'antd';
-import { Bcrumb } from '../../component/bcrumb/bcrumb';// 公共面包屑
-import { SearchFilter } from './searchFilter';// 公共面包屑
+import { Table, Button } from 'antd';
 
 const columns = [
 	{
@@ -37,7 +35,7 @@ for (let i = 0; i < 46; i++) {
 	});
 }
 
-class TableList extends React.Component {
+export class TableList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.start = this.start.bind(this);
@@ -76,12 +74,8 @@ class TableList extends React.Component {
 			showSizeChanger: true, //是否可以改变pageSize
 			showTotal: total => `共 ${total} 条`//显示总条数
 		};
-		//传递form属性
-		const form = this.props.form;
 		return (
 			<div>
-				<Bcrumb title="当前天气" icon="cloud" />
-				<SearchFilter form={form} />
 				<div style={{ marginBottom: 16 }}>
 					<Button
 						type="primary"
@@ -105,5 +99,3 @@ class TableList extends React.Component {
 		);
 	}
 }
-
-export default Form.create()(TableList);

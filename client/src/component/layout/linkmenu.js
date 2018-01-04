@@ -23,6 +23,12 @@ function LinkMenu(props) {
 						<span>首页</span>
 					</Link>
 				</Menu.Item>
+				<Menu.Item key="2">
+					<Link to="/basic">
+						<Icon type="pie-chart" />
+						<span>案例</span>
+					</Link>
+				</Menu.Item>
 				<SubMenu
 					key="sub1"
 					title={<span><Icon type="user" /><span>User</span></span>}

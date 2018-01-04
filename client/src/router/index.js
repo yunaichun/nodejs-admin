@@ -4,9 +4,9 @@ import { BrowserRouter as Router, HashRouter, Route, Switch, Redirect } from 're
 import reduxThunkAction from '../component/asyncAction/reduxThunkAction';
 import reduxPromiseAction1 from '../component/asyncAction/reduxPromiseAction1';
 import reduxPromiseAction2 from '../component/asyncAction/reduxPromiseAction2';
-import Table from '../component/basic/table';
+import Basic from '../component/basic/index';
 /*前端页面组件*/
-import Layout from '../component/layout/layout';
+import Layout from '../component/layout/index';
 import Home from '../containers/home/home';
 import NotFound from '../containers/404/404';
 import Login from '../containers/login/login';
@@ -20,7 +20,7 @@ const RouterConfig = () => (
 			<Layout>
 				<Switch>
 					<Route exact path="/home" component={Home} />
-					<Route exact path="/list" component={Table} />
+					<Route exact path="/basic" component={Basic} />
 					<Route exact path="/reduxThunkAction" component={reduxThunkAction} />
 					<Route exact path="/reduxPromiseAction1" component={reduxPromiseAction1} />
 					<Route exact path="/reduxPromiseAction2" component={reduxPromiseAction2} />
