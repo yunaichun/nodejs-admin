@@ -8,95 +8,65 @@ const { RangePicker } = DatePicker;
 export class SearchFilter extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleReset = this.handleReset.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-	}
-	handleFields(fields) {
-		const { createTime } = fields;
-		if (createTime !== undefined && createTime.length) {
-			fields.createTime = [createTime[0].format('YYYY-MM-DD'), createTime[1].format('YYYY-MM-DD')];
-		}
-		return fields;
-	}
-	handleSubmit() {
-		const { getFieldsValue } = this.props.form;
-		let fields = getFieldsValue();
-		fields = this.handleFields(fields);
-		console.log(fields);
-	}
-	handleReset() {
-		const { getFieldsValue, setFieldsValue } = this.props.form;
-		const fields = getFieldsValue();
-		for (let item in fields) {
-			if ({}.hasOwnProperty.call(fields, item)) { //对象实例属性
-				if (fields[item] instanceof Array) { //是数组置为空数组
-					fields[item] = [];
-				} else { //非数组置为undefined
-					fields[item] = undefined;
-				}
-			}
-		}
-		setFieldsValue(fields);
-		this.handleSubmit();
-	}
-	handleChange(key, values) {
-		console.log(key, values);
-		const { getFieldsValue } = this.props.form;
-		let fields = getFieldsValue();
-		fields[key] = values;
-		fields = this.handleFields(fields);
-		console.log(fields);
 	}
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { handleSubmit, handleChange, handleReset, handleCreate } = this.props;
 		return (
 			<Row gutter={24}>
 				<Col xl={{ span: 8 }} md={{ span: 8 }}>
-					{getFieldDecorator('name')(
+					{getFieldDecorator('nameFilter')(
 						<Search 
 							placeholder="Search Name"
 							size="large" 
-							onSearch={this.handleSubmit}
+							onSearch={handleSubmit}
 						/>
 					)}
 				</Col>
 				<Col xl={{ span: 8 }} md={{ span: 8 }}>
-					{getFieldDecorator('address')(
+					{getFieldDecorator('addressFilter')(
 						<Cascader
 							size="large"
 							style={{ width: '100%' }}
 							options={city}
 							placeholder="Please pick an address"
-							onChange={this.handleChange.bind(null, 'address')}
+							onChange={handleChange.bind(null, 'addressFilter')}
 						/>
 					)}
 				</Col>
 				<Col xl={{ span: 8 }} md={{ span: 8 }} sm={{ span: 12 }}>
-					{getFieldDecorator('createTime')(
+					{getFieldDecorator('timeFilter')(
 						<RangePicker 
 							style={{ width: '100%' }}
 							size="large"
-							onChange={this.handleChange.bind(null, 'createTime')}
+							onChange={handleChange.bind(null, 'timeFilter')}
 						/>
 					)}
 				</Col>
 				<Col xl={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
-					<div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: 16, marginBottom: 16 }}>
+					<div 
+						style={{ 
+							display: 'flex', 
+							justifyContent: 'space-between', 
+							flexWrap: 'wrap', 
+							marginTop: 16, 
+							marginBottom: 16 
+						}}
+					>
 						<div>
 							<Button 
 								type="primary"
 								size="large"
 								style={{ marginRight: 16 }}
-								onClick={this.handleSubmit}
+								onClick={handleSubmit}
 							>
 								Search
 							</Button>
-							<Button size="large" onClick={this.handleReset}>Reset</Button>
+							<Button size="large" onClick={handleReset}>Reset</Button>
 						</div>
 						<div>
 						<Switch style={{ marginRight: 16 }} size="large" defaultChecked />
-						<Button size="large" type="ghost" >Create</Button>
+						<Button size="large" type="ghost" onClick={handleCreate}>Create</Button>
 						</div>
 					</div>
 				</Col>

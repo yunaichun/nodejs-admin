@@ -21,7 +21,7 @@
     JSON.stringify(map)
     ```
 */
-let DICT = {
+const DICT = {
     110000: '北京',
     110100: '北京市',
     110101: '东城区',

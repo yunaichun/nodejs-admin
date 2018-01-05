@@ -6,6 +6,10 @@ const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 function LinkMenu(props) {
+	const hash = window.location.hash.split('/');
+	const defaultSelectedKey = [
+		hash[hash.length - 1].split('?')[0] || 'home'
+	];
 	return (
 		<Sider
 			collapsible
@@ -16,14 +20,14 @@ function LinkMenu(props) {
 				<img alt="logo" src="http://cdn.taofangdd.com/FvJSSx8lTrnGLyoS64a7NPUSKz0i" />
 				<span>AntD Admin</span>
 			</div>
-			<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-				<Menu.Item key="1">
+			<Menu theme="dark" defaultSelectedKeys={defaultSelectedKey} mode="inline">
+				<Menu.Item key="home">
 					<Link to="/home">
 						<Icon type="pie-chart" />
 						<span>首页</span>
 					</Link>
 				</Menu.Item>
-				<Menu.Item key="2">
+				<Menu.Item key="basic">
 					<Link to="/basic">
 						<Icon type="pie-chart" />
 						<span>案例</span>
