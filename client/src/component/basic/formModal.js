@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, InputNumber, Radio, Modal, Cascader } from 'antd';
-import city from './city';
+import city from '../../util/city';
 
 const FormItem = Form.Item;
 

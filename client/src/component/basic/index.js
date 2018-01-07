@@ -64,6 +64,7 @@ class Basic extends React.Component {
 		for (let i = 0; i < 46; i++) {
 			data.push({
 				key: i,
+				avatar: 'http://dummyimage.com/100x100/f279c4/757575.png&text=T',
 				name: `Edward ${i}`,
 				nickName: 'Edward',
 				isMale: true,

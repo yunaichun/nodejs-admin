@@ -1,4 +1,5 @@
-import { signin, logout } from '../../api/api';
+import { signin, logout } from '../../api/index';
+
 /**
  * [userAction 调用reducer]
  * 它们的作用是封装动作对象的内部结构，以便其余的代码库不需要关心它。

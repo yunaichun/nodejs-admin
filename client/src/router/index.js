@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 /*Redux异步Action测试*/
-import reduxThunkAction from '../component/asyncAction/reduxThunkAction';
-import reduxPromiseAction1 from '../component/asyncAction/reduxPromiseAction1';
-import reduxPromiseAction2 from '../component/asyncAction/reduxPromiseAction2';
+import reduxThunkAction from '../component/asyncExp/reduxThunkAction';
+import reduxPromiseAction1 from '../component/asyncExp/reduxPromiseAction1';
+import reduxPromiseAction2 from '../component/asyncExp/reduxPromiseAction2';
 import Basic from '../component/basic/index';
 /*前端页面组件*/
 import Layout from '../component/layout/index';

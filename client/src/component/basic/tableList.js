@@ -48,6 +48,13 @@ export class TableList extends React.Component {
 		//设置表头信息
 		const columns = [
 			{
+				title: 'Avatar',
+				dataIndex: 'avatar',
+				key: 'avatar',
+				width: 64,
+				render: text => <img alt={'avatar'} width={24} src={text} />,
+			},
+			{
 				title: 'Name',
 				dataIndex: 'name',
 				key: 'name',

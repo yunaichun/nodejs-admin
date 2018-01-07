@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Input, Cascader, DatePicker, Button, Switch } from 'antd';
-import city from './city';
+import city from '../../util/city';
 
 const Search = Input.Search;
 const { RangePicker } = DatePicker;

@@ -1,9 +1,8 @@
 import axios from 'axios';
+import qs from 'querystring';
+import { globalVars } from '../util/config';
 
-const qs = require('querystring');
-
-export const baseDomain = 'http://localhost:3000';
-
+const baseDomain = globalVars.baseDomain;
 /*跨域请求得携带cookie*/
 axios.defaults.withCredentials = true; 
 /**
@@ -12,17 +11,10 @@ axios.defaults.withCredentials = true;
 //登陆
 export const signin = (params) => (
 	//可以携带cookie
-	axios.create({ withCredentials: true }).get(`${baseDomain}/signin?${qs.stringify(params)}`).then(res => res.data)
-);
-//注册
-export const signup = (params) => (
-	axios.get(`${baseDomain}/signup?${qs.stringify(params)}`).then(res => res.data)
+	axios.create({ withCredentials: true })
+	.get(`${baseDomain}/signin?${qs.stringify(params)}`).then(res => res.data)
 );
 //退出
 export const logout = () => (
 	axios.get(`${baseDomain}/logout`).then(res => res.data)
-);
-//查询所有用户
-export const selectUsers = () => (
-	axios.create({ withCredentials: true }).get(`${baseDomain}/selectUsers`).then(res => res.data)
 );
