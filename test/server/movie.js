@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 
 const getRandomString = require('../utils/getRandomString');
-const Catetory = require('../../server/app/models/catetory');
-const Movie = require('../../server/app/models/movie');
+const Catetory = require('../../server/src/models/catetory');
+const Movie = require('../../server/src/models/movie');
 const fs = require('fs');
 const path = require('path');
 

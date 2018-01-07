@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
 const getRandomString = require('../utils/getRandomString');
-const User = require('../../server/app/models/user');
+const User = require('../../server/src/models/user');
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('node-xlsx');

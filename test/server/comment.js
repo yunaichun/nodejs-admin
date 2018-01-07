@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 
-const Movie = require('../../server/app/models/movie');
-const Comment = require('../../server/app/models/comment');
-const User = require('../../server/app/models/user');
+const Movie = require('../../server/src/models/movie');
+const Comment = require('../../server/src/models/comment');
+const User = require('../../server/src/models/user');
 
 let movie = {};//电影
 let comment1 = {};//评论1 

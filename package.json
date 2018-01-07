@@ -57,7 +57,7 @@
   "scripts": {
     "server": "nodemon --harmony ./server/index.js --config nodemonrc.json",
     "test:server": "mocha --compilers js:babel-core/register --require ./test/server/helper.js ./test/server/ --recursive",
-    "test:client": "mocha --compilers js:babel-core/register --require ./test/client/helper.js ./test/client/ --recursive",
+    "test:client": "mocha --compilers js:babel-core/register,less:./test/client/css-null-compiler.js --require ./test/client/helper.js ./test/client/ --recursive",
     "build": "webpack",
     "dev": "webpack-dev-server"
   },
