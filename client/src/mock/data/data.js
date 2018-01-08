@@ -10,7 +10,7 @@ const LoginUsers = [
 	}
 ];
 
-const Users = Mock.mock({
+const Datas = Mock.mock({
 	'data|80-100': [
 		{
 			id: '@id',
@@ -34,4 +34,4 @@ const Users = Mock.mock({
 		},
 	],
 });
-export { LoginUsers, Users };
+export { LoginUsers, Datas };

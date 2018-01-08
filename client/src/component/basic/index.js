@@ -1,10 +1,13 @@
 import React from 'react';
-import { Form, Modal } from 'antd';
+import { connect } from 'react-redux';
+import { Form, Modal, message } from 'antd';
 
 import { Bcrumb } from '../../component/bcrumb/bcrumb';// 公共面包屑
 import { SearchFilter } from './searchFilter';// 搜索筛选条件
 import { TableList } from './tableList';// table
 import { FormModal } from './formModal';// modal
+
+import * as actionCreators from '../../redux/actions/index';
 
 const confirm = Modal.confirm;
 
@@ -26,6 +29,8 @@ class Basic extends React.Component {
 			tableProps: {
 				data: [],
 				onMenuClick: this.onMenuClick.bind(this),
+				deleteAll: this.deleteAll.bind(this),
+				currentRow: [], //全部删除传递参数
 			},
 			modalProps: {
 				modalType: 'create',
@@ -39,6 +44,7 @@ class Basic extends React.Component {
 					delete data.nameFilter;
 					delete data.addressFilter;
 					delete data.timeFilter;
+					data.id = that.id;
 					if (that.state.modalProps.modalType === 'create') {
 						that.handleSave(data);
 					} else {
@@ -60,27 +66,18 @@ class Basic extends React.Component {
 		};
 	}
 	componentDidMount() {
-		const data = [];
-		for (let i = 0; i < 46; i++) {
-			data.push({
-				key: i,
-				avatar: 'http://dummyimage.com/100x100/f279c4/757575.png&text=T',
-				name: `Edward ${i}`,
-				nickName: 'Edward',
-				isMale: true,
-				age: i,
-				phone: '18888888888',
-				email: 'xxx@qq.com',
-				address: '陕西省 榆林市 佳县',
-			});
-		}
-		this.setState({
-			tableProps: Object.assign({}, this.state.tableProps, { data })
+		this.props.selecMockAll().then(data => {
+			if (data.payload.status === '200') {
+				this.setState({
+					tableProps: Object.assign({}, this.state.tableProps, { data: data.payload.data.data })
+				});
+			}
 		});
 	}
 	// edit + delete
 	onMenuClick(text, e) {
-		console.log(text);
+		const that = this;
+		that.id = text.id;
 		if (e.key === 'update') {
 			this.setState({
 				modalProps: Object.assign({}, this.state.modalProps,
@@ -97,9 +94,28 @@ class Basic extends React.Component {
 				title: 'Are you sure delete this record?',
 				onOk() { //确认删除
 					console.log('删除成功:', text);
+					const id = text.id;
+					that.props.deleteMockOne(id, 'bbb').then(data => {
+						if (data.payload.status === '200') {
+							that.setState({
+								tableProps: Object.assign({}, that.state.tableProps, { data: data.payload.data.data })
+							});
+							message.success(data.payload.msg, 2);
+						}
+					});
 				},
 			});
 		}
+	}
+	//deleteAll
+	deleteAll(params) {
+		this.props.deleteMockAll(params.currentRow).then(data => {
+			if (data.payload.status === '200') {
+				this.setState({
+					tableProps: Object.assign({}, this.state.tableProps, { data: data.payload.data.data })
+				});
+			}
+		});
 	}
 	//create
 	handleCreate() {
@@ -115,12 +131,42 @@ class Basic extends React.Component {
 		});
 	}
 	//save
-	handleSave(data) {
-		console.log('create:', data);
+	handleSave(addItem) {
+		const that = this;
+		console.log('update:', addItem);
+		that.props.addMockOne(addItem).then(data => {
+			if (data.payload.status === '200') {
+				message.success(data.payload.msg, 2);
+				that.setState({
+					tableProps: Object.assign({}, that.state.tableProps, { data: data.payload.data.data }),
+					modalProps: Object.assign({}, that.state.modalProps,
+						{ 
+							visible: false,
+							item: {}, //清空表单
+						}
+					)
+				});
+			}
+		});
 	}
 	//update
-	handleUpdate(data) {
-		console.log('update:', data);
+	handleUpdate(editItem) {
+		const that = this;
+		console.log('update:', editItem);
+		that.props.editMockOne(editItem).then(data => {
+			if (data.payload.status === '200') {
+				message.success(data.payload.msg, 2);
+				that.setState({
+					tableProps: Object.assign({}, that.state.tableProps, { data: data.payload.data.data }),
+					modalProps: Object.assign({}, that.state.modalProps,
+						{ 
+							visible: false,
+							item: {}, //清空表单
+						}
+					)
+				});
+			}
+		});
 	}
 	handleFields(fields) {
 		const { createTime } = fields;
@@ -161,13 +207,14 @@ class Basic extends React.Component {
 		this.handleSubmit();
 	}
 	render() {
+		console.log(this.props);
 		const form = this.props.form;
 		const filterProps = this.state.filterProps;
 		const tableProps = this.state.tableProps;	
 		const modalProps = this.state.modalProps;	
 		return (
 			<div>
-				<Bcrumb title="案例" icon="cloud" />
+				<Bcrumb title="Mock" icon="table" />
 				<SearchFilter form={form} {...filterProps} />
 				<TableList {...tableProps} />
 				<FormModal form={form} {...modalProps} />
@@ -176,4 +223,13 @@ class Basic extends React.Component {
 	}
 }
 
-export default Form.create()(Basic);
+const BasicModule = Form.create()(Basic);
+
+function mapStateToProps(state) {
+	return state;
+}
+
+export default connect(
+	mapStateToProps,
+	actionCreators
+)(BasicModule);

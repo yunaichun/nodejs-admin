@@ -13,12 +13,11 @@ export class TableList extends React.Component {
 	}
 	onSelectChange(selectedRowKeys, currentRow) {
 		console.log('selectedRowKeys changed: ', selectedRowKeys, currentRow);
-		this.setState({ selectedRowKeys });
+		this.setState({ selectedRowKeys, currentRow });
 	}
-	start() {
-		console.log('全部删除id数组值', this.state.selectedRowKeys);
-		this.setState({ loading: true });
-		// ajax request after empty completing
+	//全部删除
+	start(params) {
+		this.props.deleteAll(params);
 		setTimeout(() => {
 			this.setState({
 				selectedRowKeys: [],
@@ -131,7 +130,7 @@ export class TableList extends React.Component {
 				<div style={{ marginBottom: 16 }}>
 					<Button
 						type="danger"
-						onClick={this.start}
+						onClick={() => this.start(this.state)}
 						disabled={!hasSelected}
 						loading={loading}
 					>

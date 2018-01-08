@@ -1,4 +1,4 @@
-import { signin, logout } from '../../api/index';
+import { signin, logout } from '../../../api/index';
 
 /**
  * [userAction 调用reducer]

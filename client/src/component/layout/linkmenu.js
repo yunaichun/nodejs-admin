@@ -29,8 +29,8 @@ function LinkMenu(props) {
 				</Menu.Item>
 				<Menu.Item key="basic">
 					<Link to="/basic">
-						<Icon type="pie-chart" />
-						<span>案例</span>
+						<Icon type="table" />
+						<span>Mock</span>
 					</Link>
 				</Menu.Item>
 				<SubMenu
