@@ -5,7 +5,7 @@ import { Form, Modal, message } from 'antd';
 import { Bcrumb } from '../../component/bcrumb/bcrumb';// 公共面包屑
 import { SearchFilter } from './searchFilter';// 搜索筛选条件
 import { TableList } from './tableList';// table
-import { FormModal } from './formModal';// modal
+import FormModal from './formModal';// modal
 
 import * as actionCreators from '../../redux/actions/index';
 
@@ -30,13 +30,13 @@ class Basic extends React.Component {
 				data: [],
 				onMenuClick: this.onMenuClick.bind(this),
 				deleteAll: this.deleteAll.bind(this),
-				currentRow: [], //全部删除传递参数
+				// currentRow: [], //全部删除传递参数
 			},
 			modalProps: {
 				modalType: 'create',
 				item: {}, //初始数据
 				visible: false, //是否可见
-				maskClosable: true, //点击蒙层是否可以关闭
+				maskClosable: false, //点击蒙层是否可以关闭
 				confirmLoading: false, //确定按钮loading状态
 				wrapClassName: 'vertical-center-modal', //对话框外层容器的类名
 				title: 'Create User', //标题
@@ -89,6 +89,12 @@ class Basic extends React.Component {
 					}
 				)
 			});
+
+			//必须要重置表单，不然antdDesign的initinal value不起作用
+			const { setFieldsValue } = that.props.form;
+			const address = text.address ? text.address.split(' ') : [];
+			const item = Object.assign({}, text, { address });
+			setFieldsValue(item);
 		} else if (e.key === 'delete') {
 			confirm({
 				title: 'Are you sure delete this record?',
@@ -129,6 +135,9 @@ class Basic extends React.Component {
 				}
 			)
 		});
+
+		//必须要重置表单，不然antdDesign的initinal value不起作用
+		this.handleReset();
 	}
 	//save
 	handleSave(addItem) {
@@ -155,6 +164,7 @@ class Basic extends React.Component {
 		console.log('update:', editItem);
 		that.props.editMockOne(editItem).then(data => {
 			if (data.payload.status === '200') {
+				//成功返回状态
 				message.success(data.payload.msg, 2);
 				that.setState({
 					tableProps: Object.assign({}, that.state.tableProps, { data: data.payload.data.data }),
@@ -204,7 +214,6 @@ class Basic extends React.Component {
 			}
 		}
 		setFieldsValue(fields);
-		this.handleSubmit();
 	}
 	render() {
 		console.log(this.props);

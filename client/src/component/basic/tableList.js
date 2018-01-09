@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Dropdown, Icon, Menu } from 'antd';
+import { Table, Button, Dropdown, Icon, Menu, Popconfirm } from 'antd';
 
 export class TableList extends React.Component {
 	constructor(props) {
@@ -128,14 +128,21 @@ export class TableList extends React.Component {
 		return (
 			<div>
 				<div style={{ marginBottom: 16 }}>
-					<Button
-						type="danger"
-						onClick={() => this.start(this.state)}
-						disabled={!hasSelected}
-						loading={loading}
+					<Popconfirm 
+						title={'Are you sure delete these items?'} 
+						placement="left" 
+						onConfirm={() => this.start(this.state)}
 					>
-						RemoveAll
-					</Button>
+						<Button 
+							type="danger" 
+							size="large" 
+							style={{ marginLeft: 8 }} 
+							disabled={!hasSelected} 
+							loading={loading}
+						>
+							Remove
+						</Button>
+					</Popconfirm>
 					<span style={{ marginLeft: 8 }}>
 						{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
 					</span>
