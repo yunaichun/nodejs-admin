@@ -18,7 +18,6 @@ const mockApi = {
 
 		//登录接口
 		mock.onPost('/signin').reply(config => {
-			console.log(config);
 			const { name, password } = JSON.parse(config.data);
 			return new Promise((resolve, reject) => {
 				let user = null;
@@ -43,9 +42,8 @@ const mockApi = {
 			});
 		});
 		//退出
-		mock.onGet('/logout').reply(config => {
-			console.log(config);
-			return new Promise((resolve, reject) => {
+		mock.onGet('/logout').reply(() => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					window.document.cookie = 'name=';
 					resolve([200, { status: '200', msg: '退出成功' }]);
@@ -55,10 +53,34 @@ const mockApi = {
 
 
 		//查询全部
-		mock.onGet('/selecDatas').reply(config => {
-			console.log(config);
-			return new Promise((resolve, reject) => {
+		mock.onGet('/selectDatas').reply((config) => {
+			const { nameFilter, addressFilter, timeFilter } = config;
+			return new Promise((resolve) => {
 				setTimeout(() => {
+					let filterDatas = Datas;
+					if (nameFilter || addressFilter || timeFilter) {
+						if (nameFilter) {
+							filterDatas = {
+								data: filterDatas.data.filter(u => u.name.indexOf(nameFilter) > -1)
+							};
+						}
+						if (addressFilter) {
+							filterDatas = {
+								data: filterDatas.data.filter(u => u.address.indexOf(addressFilter.join(' ')) > -1)
+							};
+						}
+						if (timeFilter && timeFilter.length !== 0) {
+							const start = new Date(timeFilter[0]).getTime();
+							const end = new Date(timeFilter[1]).getTime();
+							filterDatas = {
+								data: filterDatas.data.filter(u => {
+									const current = new Date(u.createTime).getTime();
+									return current > start && current < end;
+								})
+							};
+						}
+						resolve([200, { status: '200', msg: '查询成功', data: filterDatas }]);
+					}
 					resolve([200, { status: '200', msg: '查询成功', data: Datas }]);
 				}, 1000);
 			});
@@ -66,7 +88,7 @@ const mockApi = {
 		//删除单个
 		mock.onGet('/deleteData').reply(config => {
 			const id = config.id;
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					Datas.data = Datas.data.filter(u => {
 						return u.id !== id;
@@ -78,7 +100,7 @@ const mockApi = {
 		//删除全部
 		mock.onGet('/deleteDatas').reply(config => {
 			const params = config.params;
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					Datas.data = Datas.data.filter(item => {
 						return !params.some((param) => {
@@ -92,8 +114,7 @@ const mockApi = {
 		//修改单个
 		mock.onPost('/updateData').reply(config => {
 			const editItem = JSON.parse(config.data);
-			console.log(editItem);
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					Datas.data = Datas.data.map(u => {
 						if (u.id === editItem.id) {
@@ -108,11 +129,16 @@ const mockApi = {
 		//新增单个
 		mock.onPost('/addData').reply(config => {
 			const addItem = JSON.parse(config.data);
-			console.log(addItem);
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					addItem.createTime = Mock.mock('@now');
-					addItem.avatar = addItem.avatar || Mock.Random.image('100x100', Mock.Random.color(), '#757575', 'png', addItem.nickName.substr(0, 1));
+					addItem.avatar = addItem.avatar || Mock.Random.image(
+										'100x100', 
+										Mock.Random.color(), 
+										'#757575', 
+										'png', 
+										addItem.nickName.substr(0, 1)
+									);
 					addItem.id = Mock.mock('@id');
 
 					Datas.data.unshift(addItem);

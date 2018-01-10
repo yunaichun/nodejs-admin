@@ -5,8 +5,8 @@ import { selecDatas, deleteData, deleteDatas, updateData, addData } from '../../
  * 操作创建者还可以方便地记录在给定应用程序中可以调度的所有操作。
  */
 // 查询全部
-const selecMockAll = () => {
-	const request = selecDatas();
+const selecMockAll = (params) => {
+	const request = selecDatas(params);
 	return {
 		type: 'selectDatas',
 		payload: request

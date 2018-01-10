@@ -16,8 +16,8 @@ export const logout = () => (
 
 
 //查询全部
-export const selecDatas = () => (
-	axios.get(`${mockDomain}/selecDatas`).then(res => res.data)
+export const selecDatas = (params) => (
+	axios.get(`${mockDomain}/selectDatas`, params).then(res => res.data)
 );
 //删除单个
 export const deleteData = (params) => (

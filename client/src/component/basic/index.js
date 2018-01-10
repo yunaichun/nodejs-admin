@@ -190,7 +190,13 @@ class Basic extends React.Component {
 		const { getFieldsValue } = this.props.form;
 		let fields = getFieldsValue();
 		fields = this.handleFields(fields);
-		console.log(fields);
+		this.props.selecMockAll(fields).then(data => {
+			if (data.payload.status === '200') {
+				this.setState({
+					tableProps: Object.assign({}, this.state.tableProps, { data: data.payload.data.data })
+				});
+			}
+		});
 	}
 	//change
 	handleChange(key, values) {
@@ -198,7 +204,13 @@ class Basic extends React.Component {
 		let fields = getFieldsValue();
 		fields[key] = values;
 		fields = this.handleFields(fields);
-		console.log(fields);
+		this.props.selecMockAll(fields).then(data => {
+			if (data.payload.status === '200') {
+				this.setState({
+					tableProps: Object.assign({}, this.state.tableProps, { data: data.payload.data.data })
+				});
+			}
+		});
 	}
 	//reset
 	handleReset() {
@@ -216,7 +228,6 @@ class Basic extends React.Component {
 		setFieldsValue(fields);
 	}
 	render() {
-		console.log(this.props);
 		const form = this.props.form;
 		const filterProps = this.state.filterProps;
 		const tableProps = this.state.tableProps;	
