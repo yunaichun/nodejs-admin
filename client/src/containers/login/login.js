@@ -23,6 +23,7 @@ class Login extends React.Component {
 						console.log('异步获取redux store数据:', data);
 						if (data.payload.status === '200') {
 							message.success(data.payload.msg, 2);
+							sessionStorage.setItem('user', data.payload.user.name);
 							this.props.history.push('/home');
 						} else {
 							message.error(data.payload.msg, 2);

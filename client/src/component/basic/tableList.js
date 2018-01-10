@@ -152,6 +152,7 @@ export class TableList extends React.Component {
 					pagination={pagination} 
 					columns={columns} 
 					dataSource={data} 
+					rowKey="uid"
 				/>
 			</div>
 		);

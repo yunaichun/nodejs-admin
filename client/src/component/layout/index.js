@@ -30,6 +30,7 @@ class LayOut extends React.Component {
 			if (data.payload.status === '200') {
 				message.success(data.payload.msg, 2);
 				// this.props.history.push('/login');
+				sessionStorage.removeItem('user');
 				window.location.hash = '#/login';
 			} else {
 				message.error(data.payload.msg, 2);
