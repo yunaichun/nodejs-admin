@@ -9,10 +9,10 @@ import reduxPromiseAction2 from '../component/asyncExp/reduxPromiseAction2';
 import Basic from '../component/basic/index';
 /*前端页面组件*/
 import Layout from '../component/layout/index';
-import Home from '../containers/home/home';
 import NotFound from '../containers/404/404';
+import Home from '../containers/home/home';
 import Login from '../containers/login/login';
-
+import User from '../containers/user/index';
 
 const RouterConfig = () => (
 	<HashRouter>
@@ -26,6 +26,7 @@ const RouterConfig = () => (
 					<AuthRouter path="/reduxThunkAction" component={reduxThunkAction} />
 					<AuthRouter path="/reduxPromiseAction1" component={reduxPromiseAction1} />
 					<AuthRouter path="/reduxPromiseAction2" component={reduxPromiseAction2} />
+					<AuthRouter path="/user" component={User} />
 					<AuthRouter path="*" component={NotFound} />
 				</Switch>
 			</Layout>

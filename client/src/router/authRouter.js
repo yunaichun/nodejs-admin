@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 const AuthRoute = ({ component: Component, path: Path }) => {
-	console.log(Path);
 	if (Path === '/login') {
 		sessionStorage.removeItem('user');
 	}

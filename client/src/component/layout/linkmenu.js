@@ -23,7 +23,7 @@ function LinkMenu(props) {
 			<Menu theme="dark" defaultSelectedKeys={defaultSelectedKey} mode="inline">
 				<Menu.Item key="home">
 					<Link to="/home">
-						<Icon type="pie-chart" />
+						<Icon type="home" />
 						<span>首页</span>
 					</Link>
 				</Menu.Item>
@@ -34,12 +34,15 @@ function LinkMenu(props) {
 					</Link>
 				</Menu.Item>
 				<SubMenu
-					key="sub1"
-					title={<span><Icon type="user" /><span>User</span></span>}
+					key="github"
+					title={<span><Icon type="github" /><span>Movie</span></span>}
 				>
-					<Menu.Item key="3">Tom</Menu.Item>
-					<Menu.Item key="4">Bill</Menu.Item>
-					<Menu.Item key="5">Alex</Menu.Item>
+					<Menu.Item key="user">
+						<Link to="/user">
+							<Icon type="user" />
+							<span>User</span>
+						</Link>
+					</Menu.Item>
 				</SubMenu>
 			</Menu>
 		</Sider>

@@ -120,7 +120,7 @@ exports.deleteUser = function (req, res) {
 };
 exports.deleteUsers = function (req, res) {
     const ids = req.body.ids;//获取数组
-    console.log('传递数据：', req.body);
+    console.log('传递数据：', req.body, ids);
     User.deleteAllByIds(ids, (err1, res1) => {
         if (err1) {
             const errorData = {

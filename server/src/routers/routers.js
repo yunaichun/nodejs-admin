@@ -28,7 +28,7 @@ router.get('/deleteUser/:id', User.deleteUser);
 router.post('/deleteUsers', User.deleteUsers);
 router.get('/updateUser', User.updateUser);
 router.get('/selectUser', User.selectUser);
-router.get('/selectUsers', User.signinMiddleware, User.selectUsers);
+router.get('/selectUsers', User.selectUsers);
 router.get('/signin', User.signin);
 router.get('/signup', User.signup);
 router.get('/logout', User.logout);
