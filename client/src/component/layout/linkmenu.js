@@ -24,7 +24,7 @@ function LinkMenu(props) {
 				<Menu.Item key="home">
 					<Link to="/home">
 						<Icon type="home" />
-						<span>首页</span>
+						<span>Home</span>
 					</Link>
 				</Menu.Item>
 				<Menu.Item key="basic">
@@ -41,6 +41,12 @@ function LinkMenu(props) {
 						<Link to="/user">
 							<Icon type="user" />
 							<span>User</span>
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="catetory">
+						<Link to="/catetory">
+							<Icon type="database" />
+							<span>Catetory</span>
 						</Link>
 					</Menu.Item>
 				</SubMenu>

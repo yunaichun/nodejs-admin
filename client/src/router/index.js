@@ -13,6 +13,7 @@ import NotFound from '../containers/404/404';
 import Home from '../containers/home/home';
 import Login from '../containers/login/login';
 import User from '../containers/user/index';
+import Catetory from '../containers/catetory/index';
 
 const RouterConfig = () => (
 	<HashRouter>
@@ -27,6 +28,7 @@ const RouterConfig = () => (
 					<AuthRouter path="/reduxPromiseAction1" component={reduxPromiseAction1} />
 					<AuthRouter path="/reduxPromiseAction2" component={reduxPromiseAction2} />
 					<AuthRouter path="/user" component={User} />
+					<AuthRouter path="/catetory" component={Catetory} />
 					<AuthRouter path="*" component={NotFound} />
 				</Switch>
 			</Layout>

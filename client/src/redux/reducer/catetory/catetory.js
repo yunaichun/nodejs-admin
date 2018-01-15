@@ -5,21 +5,21 @@
  */
 export default (state = null, action) => {
 	switch (action.type) {
-		case 'selectUs':
+		case 'selectCats':
 			return action.payload;
-		case 'insertU':
+		case 'insertCat':
 			{
 				const newData = [action.payload.data, ...state.data];
 				const newState = Object.assign({}, state, { data: newData });
 				return newState;
 			}
-		case 'deleteU':
+		case 'deleteCat':
 			{
 				const newData = state.data.filter(item => item._id !== action.payload.id);
 				const newState = Object.assign({}, state, { data: newData });
 				return newState;
 			}
-		case 'deleteUs':
+		case 'deleteCats':
 			{
 				let newData = state.data;
 				for (let i = 0; i < action.payload.ids.length; i++) {
@@ -30,7 +30,7 @@ export default (state = null, action) => {
 				const newState = Object.assign({}, state, { data: newData });
 				return newState;
 			}
-		case 'updateU':
+		case 'updateCat':
 			{
 				const currentItem = state.data.filter(item => item._id === action.payload.data._id);
 				const index = state.data.indexOf(currentItem[0]);
@@ -42,14 +42,6 @@ export default (state = null, action) => {
 				const newState = Object.assign({}, state, { data: newData });
 				return newState;
 			}
-		case 'importUs':
-			{
-				const newData = action.payload.data.data.concat(state.data);
-				const newState = Object.assign({}, state, { data: newData });
-				return newState;
-			}
-		case 'exportUs':
-			return state;
 		default: 
 			return state;
 	}

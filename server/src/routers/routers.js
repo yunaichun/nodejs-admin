@@ -36,10 +36,11 @@ router.get('/logout', User.logout);
 /*电影分类管理模块*/
 router.get('/insertCatetory', Catetory.insertCatetory);
 router.get('/deleteCatetory/:id', Catetory.deleteCatetory);
-router.get('/deleteCatetories', Catetory.deleteCatetories);
+router.post('/deleteCatetories', Catetory.deleteCatetories);
 router.get('/updateCatetory', Catetory.updateCatetory);
 router.get('/selectCatetory', Catetory.selectCatetory);
-router.get('/selectCatetories', User.signinMiddleware, Catetory.selectCatetories);
+// router.get('/selectCatetories', User.signinMiddleware, Catetory.selectCatetories);
+router.get('/selectCatetories', Catetory.selectCatetories);
 
 /*电影详情管理模块*/
 router.post('/insertMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.insertMovie);

@@ -5,6 +5,7 @@ import reduxPromiseReducer2 from './asyncExp/reduxPromiseReducer2';
 import loginReducer from './login/login';
 import mockReducer from './mock/mock';
 import userReducer from './user/user';
+import catetoryReducer from './catetory/catetory';
 
 export default combineReducers({
 	reduxThunkReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
 	reduxPromiseReducer2,
 	loginReducer, // store.GetState()
 	mockReducer,
-	userReducer
+	userReducer,
+	catetoryReducer
 }); 
