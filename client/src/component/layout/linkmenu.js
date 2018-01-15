@@ -49,6 +49,12 @@ function LinkMenu(props) {
 							<span>Catetory</span>
 						</Link>
 					</Menu.Item>
+					<Menu.Item key="movie">
+						<Link to="/movie">
+							<Icon type="video-camera" />
+							<span>Movie</span>
+						</Link>
+					</Menu.Item>
 				</SubMenu>
 			</Menu>
 		</Sider>

@@ -17,7 +17,7 @@ export class TableList extends React.Component {
 	}
 	//全部删除
 	start(params) {
-		this.props.deleteCats(params);
+		this.props.deleteMovs(params);
 		setTimeout(() => {
 			this.setState({
 				selectedRowKeys: [],
@@ -52,18 +52,58 @@ export class TableList extends React.Component {
 				key: '_id',
 			},
 			{
-				title: 'Name',
-				dataIndex: 'name',
-				key: 'name',
+				title: 'Catetory',
+				dataIndex: 'catetory.name',
+				key: 'catetory.name',
 			}, 
 			{
-				title: 'Movies',
-				dataIndex: 'movies',
-				key: 'movies',
-				render: (text) => {
-					return text.join(' , ');
-				}
+				title: 'Title',
+				dataIndex: 'title',
+				key: 'title',
 			}, 
+			{
+				title: 'Doctor',
+				dataIndex: 'doctor',
+				key: 'doctor',
+			}, 
+			{
+				title: 'Language',
+				dataIndex: 'language',
+				key: 'language',
+			},
+			{
+				title: 'Country',
+				dataIndex: 'country',
+				key: 'country',
+			},
+			{
+				title: 'Summary',
+				dataIndex: 'summary',
+				key: 'summary',
+			},
+			{
+				title: 'Flash',
+				dataIndex: 'flash',
+				key: 'flash',
+			},
+			{
+				title: 'Poster',
+				dataIndex: 'poster',
+				key: 'poster',
+				render: (text) => {
+					return `http://localhost:3000/${text}`;
+				}
+			},
+			{
+				title: 'Year',
+				dataIndex: 'year',
+				key: 'year',
+			},
+			{
+				title: 'PV',
+				dataIndex: 'pv',
+				key: 'pv',
+			},
 			{
 				title: 'Create',
 				dataIndex: 'meta.createAt',

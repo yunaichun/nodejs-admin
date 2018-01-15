@@ -52,7 +52,7 @@ exports.insertMovie = function (req, res) {
                         const successData = {
                             status: '200', 
                             msg: 'OK!',
-                            data: res3
+                            data: res1
                         };
                         res.end(JSON.stringify(successData));
                     });
@@ -134,8 +134,11 @@ exports.deleteMovies = function (req, res) {
     });
 };
 exports.updateMovie = function (req, res) {
-    const movie = req.query;
+    const movie = req.body;
     const id = movie.id;
+    if (req.poster) { 
+        movie.poster = req.poster;//中间件【假如有图片是文件上传的话】
+    }
     Movie.selectOne({ _id: id }, (err1, res1) => {
         if (err1) {
             const error1Data = {
@@ -213,6 +216,25 @@ exports.selectMovie = function (req, res) {
         });
     });
 };
+//查询全部电影
+exports.selectMovies = function (req, res) {
+    Movie.selectAll({}, (err1, res1) => {
+        if (err1) {
+            const errorData = {
+                status: '500', 
+                msg: 'server went wrong',
+                data: err1.toString()
+            };
+            res.end(JSON.stringify(errorData));
+        }
+        const successData = {
+            status: '200', 
+            msg: 'OK!',
+            data: res1
+        };
+        res.end(JSON.stringify(successData));
+    });
+};
 //电影分页查询【所有分类+指定分类】
 exports.selectMoviesByCatetory = function (req, res) {
     const catetoryId = req.query.catetoryId;
@@ -259,7 +281,7 @@ exports.selectMoviesByTitle = function (req, res) {
     });
 };
 exports.uploadImageMiddleware = function (req, res, next) {
-    const uploadImage = req.files.uploadImage;
+    const uploadImage = req.files.poster;
     if (uploadImage) {
         const filePath = uploadImage.path;
         fs.readFile(filePath, (err1, res1) => {
@@ -272,6 +294,7 @@ exports.uploadImageMiddleware = function (req, res, next) {
                 next();
             });
         });
+    } else {
+        next();
     }
-    next();
 };

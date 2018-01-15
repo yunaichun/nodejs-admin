@@ -45,9 +45,10 @@ router.get('/selectCatetories', Catetory.selectCatetories);
 /*电影详情管理模块*/
 router.post('/insertMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.insertMovie);
 router.get('/deleteMovie/:id', Movie.deleteMovie);
-router.get('/deleteMovies', Movie.deleteMovies);
-router.get('/updateMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.updateMovie);
+router.post('/deleteMovies', Movie.deleteMovies);
+router.post('/updateMovie', multipartMiddleware, Movie.uploadImageMiddleware, Movie.updateMovie);
 router.get('/selectMovie', Movie.selectMovie);
+router.get('/selectMovies', Movie.selectMovies);
 router.get('/selectMoviesByCatetory', User.signinMiddleware, Movie.selectMoviesByCatetory);
 router.get('/selectMoviesByTitle', User.signinMiddleware, Movie.selectMoviesByTitle);
 

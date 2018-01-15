@@ -14,6 +14,7 @@ import Home from '../containers/home/home';
 import Login from '../containers/login/login';
 import User from '../containers/user/index';
 import Catetory from '../containers/catetory/index';
+import Movie from '../containers/movie/index';
 
 const RouterConfig = () => (
 	<HashRouter>
@@ -29,6 +30,7 @@ const RouterConfig = () => (
 					<AuthRouter path="/reduxPromiseAction2" component={reduxPromiseAction2} />
 					<AuthRouter path="/user" component={User} />
 					<AuthRouter path="/catetory" component={Catetory} />
+					<AuthRouter path="/movie" component={Movie} />
 					<AuthRouter path="*" component={NotFound} />
 				</Switch>
 			</Layout>

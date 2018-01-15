@@ -5,3 +5,4 @@ export * from './login/login';
 export * from './mock/mock';
 export * from './user/user';
 export * from './catetory/catetory';
+export * from './movie/movie';

@@ -84,3 +84,51 @@ export const deleteCatetories = (ids) => {
 export const updateCatetory = (params) => (
 	axios.get(`${baseDomain}/updateCatetory?${qs.stringify(params)}`).then(res => res.data)
 );
+
+
+/**
+ * 电影管理模块
+ */
+//查询电影
+export const selectMovies = () => (
+	axios.get(`${baseDomain}/selectMovies?`).then(res => res.data)
+);
+//删除电影
+export const deleteMovie = (id) => (
+	axios.get(`${baseDomain}/deleteMovie/${id}`).then(res => res.data)
+);
+//新增电影
+export const insertMovie = (params) => {
+	let formData = new FormData();
+	for(let key in params) {
+		formData.append(key, params[key]);//Excel文件名
+	}
+	return axios.post(`${baseDomain}/insertMovie`,
+		formData,
+		{ headers: { 'Content-Type': 'multipart/form-data' } }
+	).then(res => res.data);
+};
+//修改电影
+export const updateMovie = (params) => {
+	let formData = new FormData();
+	for(let key in params) {
+		formData.append(key, params[key]);//Excel文件名
+	}
+	return axios.post(`${baseDomain}/updateMovie`,
+		formData,
+		{ headers: { 'Content-Type': 'multipart/form-data' } }
+	).then(res => res.data);
+};
+//批量删除电影
+export const deleteMovies = (ids) => {
+	let data = '';
+	for (let i = 0; i < ids.length; i++) {
+		data = data + 'ids=' + ids[i] + '&';
+	}
+	return axios.post(`${baseDomain}/deleteMovies`, 
+		data,
+		{ 
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		}
+	);
+};
