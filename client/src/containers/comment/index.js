@@ -31,12 +31,13 @@ class Basic extends React.Component {
 			tableProps: {
 				data: [],
 				onMenuClick: this.onMenuClick.bind(this),
-				deleteMovs: this.deleteMovs.bind(this),
+				deleteComs: this.deleteComs.bind(this),
 			},
 			modalProps: {
 				modalType: 'create',
 				item: {}, //初始数据
-				catetories: [], //下拉框初始数据
+				movies: [],
+				users: [],
 				visible: false, //是否可见
 				maskClosable: false, //点击蒙层是否可以关闭
 				confirmLoading: false, //确定按钮loading状态
@@ -68,22 +69,26 @@ class Basic extends React.Component {
 		};
 	}
 	componentDidMount() {
-		this.props.selectMovs().then(data => {
-			if (data.payload.status === '200') {
-				// 查询电影分类传递给下一级
-				this.props.selectCats().then(data2 => {
-					if (data2.payload.status === '200') {
+		console.log(this.props.match.params.movieid);
+		const movieId = this.props.match.params.movieid;
+		//movie不可变
+		localStorage.setItem('movieId', movieId);
+		this.props.selectComs({ movieId }).then(data => {
+			this.props.selectMovs().then(data2 => {
+				this.props.selectUs().then(data3 => {
+					if (data.payload.status === '200') {
 						this.setState({
 							tableProps: Object.assign({}, this.state.tableProps, { data: data.payload.data }),
 							modalProps: Object.assign({}, this.state.modalProps,
 								{ 
-									catetories: data2.payload.data
+									movies: data2.payload.data,
+									users: data3.payload.data
 								}
 							)
 						});
 					}
 				});
-			}
+			});
 		});
 	}
 	// edit + delete
@@ -113,13 +118,13 @@ class Basic extends React.Component {
 				onOk() { //确认删除
 					console.log('删除成功:', text);
 					const id = text._id;
-					that.props.deleteMov(id).then(data => {
+					that.props.deleteCom(id).then(data => {
 						if (data.payload.status === '200') {
 							that.setState({
 								tableProps: Object.assign(
 									{}, 
 									that.state.tableProps, 
-									{ data: that.props.movieReducer.data }
+									{ data: that.props.commentReducer.data }
 								)
 							});
 							message.success(data.payload.msg, 2);
@@ -127,8 +132,6 @@ class Basic extends React.Component {
 					});
 				},
 			});
-		} else if (e.key === 'comment') {
-			this.props.history.push(`/${text._id}/comment`);
 		}
 	}
 	//create
@@ -150,16 +153,14 @@ class Basic extends React.Component {
 	//save
 	handleSave(addItem) {
 		const that = this;
-		addItem.catetory = addItem.catetory._id;
-		if (addItem.poster.fileList) {
-			addItem.poster = addItem.poster.fileList[0].originFileObj;
-		}
+		addItem.from = addItem.from._id;
+		delete addItem.reply;
 		console.log('add:', addItem);
-		that.props.insertMov(addItem).then(data => {
+		that.props.insertCom(addItem).then(data => {
 			if (data.payload.status === '200') {
 				message.success(data.payload.msg, 2);
 				that.setState({
-					tableProps: Object.assign({}, that.state.tableProps, { data: that.props.movieReducer.data }),
+					tableProps: Object.assign({}, that.state.tableProps, { data: that.props.commentReducer.data }),
 					modalProps: Object.assign({}, that.state.modalProps,
 						{ 
 							visible: false,
@@ -173,17 +174,21 @@ class Basic extends React.Component {
 	//update
 	handleUpdate(editItem) {
 		const that = this;
-		editItem.catetory = editItem.catetory._id;
-		if (editItem.poster.fileList) {
-			editItem.poster = editItem.poster.fileList[0].originFileObj;
-		}
+		editItem.commentId = editItem.id;
+		delete editItem.id;
+		editItem.from = editItem.from._id;
+		editItem.reply = {
+			fromId: '5a32179c1be59f1219f358cb',
+			toId: '5a30b78d2ad95e7548283f41',
+			content: 'test回复test01用户'
+		};
 		console.log('update:', editItem);
-		that.props.updateMov(editItem).then(data => {
+		that.props.insertCom(editItem).then(data => {
 			if (data.payload.status === '200') {
 				//成功返回状态
 				message.success(data.payload.msg, 2);
 				that.setState({
-					tableProps: Object.assign({}, that.state.tableProps, { data: that.props.movieReducer.data }),
+					tableProps: Object.assign({}, that.state.tableProps, { data: that.props.commentReducer.data }),
 					modalProps: Object.assign({}, that.state.modalProps,
 						{ 
 							visible: false,
@@ -233,7 +238,8 @@ class Basic extends React.Component {
 		const { getFieldsValue, setFieldsValue } = this.props.form;
 		const fields = getFieldsValue();
 		for (let item in fields) {
-			if ({}.hasOwnProperty.call(fields, item)) { //对象实例属性
+			//movie不可修改
+			if ({}.hasOwnProperty.call(fields, item) && item !== 'movie') { //对象实例属性
 				if (fields[item] instanceof Array) { //是数组置为空数组
 					fields[item] = [];
 				} else { //非数组置为undefined
@@ -243,22 +249,22 @@ class Basic extends React.Component {
 		}
 		setFieldsValue(fields);
 	}
-	//deleteMovs
-	deleteMovs(params) {
+	//deleteComs
+	deleteComs(params) {
 		const that = this;
 		const ids = [];
 		const selectedItems = params.currentRow;
 		for (let i = 0, legth = selectedItems.length; i < legth; i++) {
 			ids.push(selectedItems[i]._id);
 		}
-		this.props.deleteMovs(ids).then(data => {
+		this.props.deleteComs(ids).then(data => {
 			if (data.payload.data.status === '200') {
 				message.success('批量删除成功', 2);
 				that.setState({
 					tableProps: Object.assign(
 						{}, 
 						that.state.tableProps, 
-						{ data: that.props.movieReducer.data }
+						{ data: that.props.commentReducer.data }
 					),
 				});
 			}
@@ -271,7 +277,7 @@ class Basic extends React.Component {
 		const modalProps = this.state.modalProps;	
 		return (
 			<div>
-				<Bcrumb title="Movie" icon="video-camera" />
+				<Bcrumb title="Mock" icon="table" />
 				<SearchFilter {...filterProps} form={form} />
 				<TableList {...tableProps} />
 				<FormModal form={form} {...modalProps} />

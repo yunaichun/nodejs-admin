@@ -7,6 +7,7 @@ import mockReducer from './mock/mock';
 import userReducer from './user/user';
 import catetoryReducer from './catetory/catetory';
 import movieReducer from './movie/movie';
+import commentReducer from './comment/comment';
 
 export default combineReducers({
 	reduxThunkReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
 	mockReducer,
 	userReducer,
 	catetoryReducer,
-	movieReducer
+	movieReducer,
+	commentReducer
 }); 

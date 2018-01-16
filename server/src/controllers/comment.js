@@ -2,6 +2,7 @@ const Comment = require('../models/comment');
 const _ = require('underscore');
 
 exports.insertComment = function (req, res) {
+    console.log('去他妈比', req.body);
     //req.body请求体;req.query查询参数;req.params动态路由
     const comment = req.query;
     if (comment.commentId) { //有主评论
@@ -21,29 +22,40 @@ exports.insertComment = function (req, res) {
                 };
                 res.end(JSON.stringify(resultsData));
             } else {
-                const reply = {
-                    from: comment.fromId,
-                    to: comment.toId,
-                    content: comment.content
-                };
-                res1.reply.push(reply);
-                console.log('111111111', res1);
-                res1.save((err2, res2) => {
-                    if (err1) {
-                        const errorData = {
-                            status: '500', 
-                            msg: 'server went wrong!',
-                            data: err1.toString()
-                        };
-                        res.end(JSON.stringify(errorData));
-                    }
+                console.log('前端返回数据', comment, comment.reply === undefined);
+                 //没回复评论不添加
+                if (comment.reply === undefined) {
                     const successData = {
                         status: '200', 
                         msg: 'OK!',
-                        data: res2
+                        data: res1
                     };
                     res.end(JSON.stringify(successData));
-                });
+                } else {
+                    const reply = {
+                        from: comment.reply.fromId,
+                        to: comment.reply.toId,
+                        content: comment.reply.content
+                    };
+                    res1.reply.push(reply);
+                    console.log('有回复reply', reply, res1);
+                    res1.save((err2, res2) => {
+                        if (err1) {
+                            const errorData = {
+                                status: '500', 
+                                msg: 'server went wrong!',
+                                data: err1.toString()
+                            };
+                            res.end(JSON.stringify(errorData));
+                        }
+                        const successData = {
+                            status: '200', 
+                            msg: 'OK!',
+                            data: res2
+                        };
+                        res.end(JSON.stringify(successData));
+                    }); 
+                }
             }
         });
     } else {

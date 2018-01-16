@@ -6,3 +6,4 @@ export * from './mock/mock';
 export * from './user/user';
 export * from './catetory/catetory';
 export * from './movie/movie';
+export * from './comment/comment';

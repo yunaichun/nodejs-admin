@@ -55,7 +55,7 @@ router.get('/selectMoviesByTitle', User.signinMiddleware, Movie.selectMoviesByTi
 /*电影评论管理模块*/
 router.get('/insertComment', Comment.insertComment);
 router.get('/deleteComment/:id', Comment.deleteComment);
-router.get('/deleteComments', Comment.deleteComments);
+router.post('/deleteComments', Comment.deleteComments);
 router.get('/updateComment', Comment.updateComment);
 router.get('/selectComment', Comment.selectComment);
 router.get('/selectComments', Comment.selectComments);

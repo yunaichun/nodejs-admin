@@ -15,6 +15,7 @@ import Login from '../containers/login/login';
 import User from '../containers/user/index';
 import Catetory from '../containers/catetory/index';
 import Movie from '../containers/movie/index';
+import Comment from '../containers/comment/index';
 
 const RouterConfig = () => (
 	<HashRouter>
@@ -31,6 +32,7 @@ const RouterConfig = () => (
 					<AuthRouter path="/user" component={User} />
 					<AuthRouter path="/catetory" component={Catetory} />
 					<AuthRouter path="/movie" component={Movie} />
+					<AuthRouter path="/:movieid/comment" component={Comment} />
 					<AuthRouter path="*" component={NotFound} />
 				</Switch>
 			</Layout>

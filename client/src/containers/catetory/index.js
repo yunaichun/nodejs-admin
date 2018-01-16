@@ -250,7 +250,7 @@ class Basic extends React.Component {
 		const modalProps = this.state.modalProps;	
 		return (
 			<div>
-				<Bcrumb title="Mock" icon="table" />
+				<Bcrumb title="Catetory" icon="database" />
 				<SearchFilter {...filterProps} form={form} />
 				<TableList {...tableProps} />
 				<FormModal form={form} {...modalProps} />

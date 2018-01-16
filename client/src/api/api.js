@@ -6,6 +6,19 @@ const baseDomain = globalVars.baseDomain;
 /*跨域请求得携带cookie*/
 axios.defaults.withCredentials = true; 
 
+// /**
+//  * 登陆模块:用mockAPI登陆
+//  */
+// //登陆
+// export const signin = (params) => (
+// 	axios.get(`${baseDomain}/signin?${qs.stringify(params)}`).then(res => res.data)
+// );
+// //退出
+// export const logout = () => (
+// 	axios.get(`${baseDomain}/logout`).then(res => res.data)
+// );
+
+
 /**
  * 用户管理模块
  */
@@ -91,7 +104,7 @@ export const updateCatetory = (params) => (
  */
 //查询电影
 export const selectMovies = () => (
-	axios.get(`${baseDomain}/selectMovies?`).then(res => res.data)
+	axios.get(`${baseDomain}/selectMovies`).then(res => res.data)
 );
 //删除电影
 export const deleteMovie = (id) => (
@@ -132,3 +145,33 @@ export const deleteMovies = (ids) => {
 		}
 	);
 };
+
+/**
+ * 评论管理模块
+ */
+//查询评论
+export const selectComments = (params) => (
+	axios.get(`${baseDomain}/selectComments?${qs.stringify(params)}`).then(res => res.data)
+);
+//添加+修改评论
+export const insertComment = (params) => {
+	return axios.get(`${baseDomain}/insertComment?${qs.stringify(params)}`).then(res => res.data);
+};
+//删除评论
+export const deleteComment = (id) => (
+	axios.get(`${baseDomain}/deleteComment/${id}`).then(res => res.data)
+);
+//批量删除评论
+export const deleteComments = (ids) => {
+	let data = '';
+	for (let i = 0; i < ids.length; i++) {
+		data = data + 'ids=' + ids[i] + '&';
+	}
+	return axios.post(`${baseDomain}/deleteComments`, 
+		data,
+		{ 
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		}
+	);
+};
+
