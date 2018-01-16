@@ -22,9 +22,9 @@ exports.insertComment = function (req, res) {
                 };
                 res.end(JSON.stringify(resultsData));
             } else {
-                console.log('前端返回数据', comment, comment.reply === undefined);
+                console.log('前端返回数据', comment, comment.replyContent === undefined);
                  //没回复评论不添加
-                if (comment.reply === undefined) {
+                if (comment.replyContent === undefined) {
                     const successData = {
                         status: '200', 
                         msg: 'OK!',
@@ -33,9 +33,9 @@ exports.insertComment = function (req, res) {
                     res.end(JSON.stringify(successData));
                 } else {
                     const reply = {
-                        from: comment.reply.fromId,
-                        to: comment.reply.toId,
-                        content: comment.reply.content
+                        from: comment.fromId,
+                        to: comment.toId,
+                        content: comment.replyContent
                     };
                     res1.reply.push(reply);
                     console.log('有回复reply', reply, res1);

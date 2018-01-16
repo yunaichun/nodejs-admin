@@ -177,11 +177,9 @@ class Basic extends React.Component {
 		editItem.commentId = editItem.id;
 		delete editItem.id;
 		editItem.from = editItem.from._id;
-		editItem.reply = {
-			fromId: '5a32179c1be59f1219f358cb',
-			toId: '5a30b78d2ad95e7548283f41',
-			content: 'test回复test01用户'
-		};
+		// editItem.fromId = '5a32179c1be59f1219f358cb';
+		// editItem.toId = '5a30b78d2ad95e7548283f41';
+		// editItem.replyContent = 'test01回复test用户';
 		console.log('update:', editItem);
 		that.props.insertCom(editItem).then(data => {
 			if (data.payload.status === '200') {
