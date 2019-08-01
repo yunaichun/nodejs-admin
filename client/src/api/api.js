@@ -6,17 +6,17 @@ const baseDomain = globalVars.baseDomain;
 /*跨域请求得携带cookie*/
 axios.defaults.withCredentials = true; 
 
-// /**
-//  * 登陆模块:用mockAPI登陆
-//  */
-// //登陆
-// export const signin = (params) => (
-// 	axios.get(`${baseDomain}/signin?${qs.stringify(params)}`).then(res => res.data)
-// );
-// //退出
-// export const logout = () => (
-// 	axios.get(`${baseDomain}/logout`).then(res => res.data)
-// );
+/**
+ * 登陆模块:用mockAPI登陆
+ */
+//登陆
+export const signin = (params) => (
+	axios.get(`${baseDomain}/signin?${qs.stringify(params)}`).then(res => res.data)
+);
+//退出
+export const logout = () => (
+	axios.get(`${baseDomain}/logout`).then(res => res.data)
+);
 
 
 /**
