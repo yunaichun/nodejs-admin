@@ -6,7 +6,7 @@
   "dependencies": {
     "antd": "^3.0.3",
     "autoprefixer": "^7.2.3",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "axios-mock-adapter": "^1.10.0",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
