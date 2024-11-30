@@ -17,7 +17,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "immutable": "^3.8.2",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "mockjs": "^1.0.1-beta3",
